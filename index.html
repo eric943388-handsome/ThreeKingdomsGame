@@ -18,17 +18,15 @@ h1 {
   margin: 20px;
 }
 
-/* 資源列 */
 #stats {
   background: #2c2c3e;
   padding: 15px;
   margin: 10px auto;
-  width: 80%;
+  width: 85%;
   border-radius: 10px;
   font-size: 18px;
 }
 
-/* 按鈕區 */
 .container {
   margin-top: 15px;
 }
@@ -36,7 +34,7 @@ h1 {
 button {
   margin: 5px;
   padding: 12px 18px;
-  font-size: 16px;
+  font-size: 15px;
   border-radius: 10px;
   border: none;
   background: #3a3a5a;
@@ -48,16 +46,14 @@ button:hover {
   background: #4a4a7a;
 }
 
-/* 區塊 */
 .box {
   margin: 15px auto;
   padding: 10px;
-  width: 80%;
+  width: 85%;
   background: #2a2a45;
   border-radius: 10px;
 }
 
-/* 武將列表 */
 #generalsList div {
   padding: 5px;
   border-bottom: 1px solid #444;
@@ -86,6 +82,12 @@ button:hover {
 </div>
 
 <div class="box">
+  <h3>🏪 商店</h3>
+  <button onclick="buyFood()">購買糧食（+50）💰30</button>
+  <button onclick="buyStone()">購買石頭（+50）💰30</button>
+</div>
+
+<div class="box">
   <h3>敵人</h3>
   <div id="enemy"></div>
 </div>
@@ -100,6 +102,8 @@ button:hover {
 <script>
 // ===== 玩家數值 =====
 let gold = 200;
+let food = 100;
+let stone = 100;
 let attack = 20;
 let defense = 10;
 let generals = [];
@@ -111,16 +115,16 @@ const generalPool = [
   { name: "張飛", atk: 12, def: 3 }
 ];
 
-// ===== 更新UI =====
+// ===== UI =====
 function updateUI(msg="") {
   document.getElementById("stats").innerText =
-    `💰金幣:${gold} ⚔️兵力:${attack} 🛡防禦:${defense} 👥武將:${generals.length}`;
+    `💰${gold} 🌾${food} 🪨${stone} ⚔️${attack} 🛡${defense} 👥${generals.length}`;
 
   document.getElementById("log").innerText = msg;
   renderGenerals();
 }
 
-// ===== 顯示武將 =====
+// ===== 武將顯示 =====
 function renderGenerals() {
   let list = document.getElementById("generalsList");
   list.innerHTML = "";
@@ -134,16 +138,47 @@ function renderGenerals() {
 
 // ===== 發展 =====
 function developAtk() {
+  if (food < 20) {
+    updateUI("糧食不足！");
+    return;
+  }
+  food -= 20;
   attack += 5;
   updateUI("兵力提升！");
 }
 
 function developDef() {
+  if (stone < 20) {
+    updateUI("石頭不足！");
+    return;
+  }
+  stone -= 20;
   defense += 5;
   updateUI("國防提升！");
 }
 
-// ===== 招募（抽卡）=====
+// ===== 商店 =====
+function buyFood() {
+  if (gold < 30) {
+    updateUI("金幣不足！");
+    return;
+  }
+  gold -= 30;
+  food += 50;
+  updateUI("購買糧食成功！");
+}
+
+function buyStone() {
+  if (gold < 30) {
+    updateUI("金幣不足！");
+    return;
+  }
+  gold -= 30;
+  stone += 50;
+  updateUI("購買石頭成功！");
+}
+
+// ===== 抽卡 =====
 function recruit() {
   if (gold < 50) {
     updateUI("金幣不足！");
@@ -175,7 +210,7 @@ function findEnemy() {
     `⚔️${currentEnemy.atk} 🛡${currentEnemy.def}`;
 }
 
-// ===== 攻擊 =====
+// ===== 戰鬥 =====
 function attackEnemy() {
   if (!currentEnemy) {
     updateUI("請先找敵人！");
@@ -183,7 +218,6 @@ function attackEnemy() {
   }
 
   let totalAtk = attack + generals.reduce((a,g)=>a+g.atk,0);
-  let totalDef = defense + generals.reduce((a,g)=>a+g.def,0);
 
   if (totalAtk > currentEnemy.def) {
     let reward = 100;
