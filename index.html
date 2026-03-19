@@ -1,3 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三國養成遊戲</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: "微軟正黑體", sans-serif;
+  background: #1e1e2f;
+  color: white;
+  text-align: center;
+}
+
+h1 {
+  margin: 20px;
+}
+
+/* 資源列 */
+#stats {
+  background: #2c2c3e;
+  padding: 15px;
+  margin: 10px auto;
+  width: 80%;
+  border-radius: 10px;
+  font-size: 18px;
+}
+
+/* 按鈕區 */
+.container {
+  margin-top: 15px;
+}
+
+button {
+  margin: 5px;
+  padding: 12px 18px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  background: #3a3a5a;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #4a4a7a;
+}
+
+/* 區塊 */
+.box {
+  margin: 15px auto;
+  padding: 10px;
+  width: 80%;
+  background: #2a2a45;
+  border-radius: 10px;
+}
+
+/* 武將列表 */
+#generalsList div {
+  padding: 5px;
+  border-bottom: 1px solid #444;
+}
+
+#log {
+  margin-top: 15px;
+  color: gold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>⚔️ 我的三國 ⚔️</h1>
+
+<div id="stats"></div>
+
+<div class="container">
+  <button onclick="developAtk()">發展兵力</button>
+  <button onclick="developDef()">發展國防</button>
+  <button onclick="recruit()">招募（抽卡）</button>
+  <button onclick="findEnemy()">找敵人</button>
+  <button onclick="attackEnemy()">攻打</button>
+  <button onclick="train()">鍛鍊</button>
+</div>
+
+<div class="box">
+  <h3>敵人</h3>
+  <div id="enemy"></div>
+</div>
+
+<div class="box">
+  <h3>武將</h3>
+  <div id="generalsList"></div>
+</div>
+
+<p id="log"></p>
+
 <script>
 // ===== 玩家數值 =====
 let gold = 200;
@@ -6,7 +105,7 @@ let defense = 10;
 let generals = [];
 let currentEnemy = null;
 
-// ===== 武將池（你可以自己加）=====
+// ===== 武將池 =====
 const generalPool = [
   { name: "關羽", atk: 10, def: 5 },
   { name: "張飛", atk: 12, def: 3 }
@@ -15,10 +114,9 @@ const generalPool = [
 // ===== 更新UI =====
 function updateUI(msg="") {
   document.getElementById("stats").innerText =
-    `💰${gold} ⚔️${attack} 🛡${defense} 👥${generals.length}`;
+    `💰金幣:${gold} ⚔️兵力:${attack} 🛡防禦:${defense} 👥武將:${generals.length}`;
 
   document.getElementById("log").innerText = msg;
-
   renderGenerals();
 }
 
@@ -27,7 +125,7 @@ function renderGenerals() {
   let list = document.getElementById("generalsList");
   list.innerHTML = "";
 
-  generals.forEach((g, i) => {
+  generals.forEach((g) => {
     let div = document.createElement("div");
     div.innerText = `${g.name} ⚔️${g.atk} 🛡${g.def}`;
     list.appendChild(div);
@@ -53,10 +151,9 @@ function recruit() {
   }
 
   gold -= 50;
-
   let chance = Math.random();
 
-  if (chance < 0.4) { // ⭐ 機率你可以改
+  if (chance < 0.4) {
     let g = generalPool[Math.floor(Math.random() * generalPool.length)];
     generals.push({...g});
     updateUI("🎉 抽到武將：" + g.name);
@@ -75,12 +172,15 @@ function findEnemy() {
   };
 
   document.getElementById("enemy").innerText =
-    `敵人 ⚔️${currentEnemy.atk} 🛡${currentEnemy.def}`;
+    `⚔️${currentEnemy.atk} 🛡${currentEnemy.def}`;
 }
 
 // ===== 攻擊 =====
 function attackEnemy() {
-  if (!currentEnemy) return;
+  if (!currentEnemy) {
+    updateUI("請先找敵人！");
+    return;
+  }
 
   let totalAtk = attack + generals.reduce((a,g)=>a+g.atk,0);
   let totalDef = defense + generals.reduce((a,g)=>a+g.def,0);
@@ -92,7 +192,7 @@ function attackEnemy() {
     updateUI("勝利！獲得金幣 " + reward);
   } else {
     attack -= 10;
-    updateUI("戰敗！");
+    updateUI("戰敗...");
   }
 
   currentEnemy = null;
@@ -114,3 +214,6 @@ function train() {
 // ===== 初始化 =====
 updateUI("開始你的三國之旅！");
 </script>
+
+</body>
+</html>
