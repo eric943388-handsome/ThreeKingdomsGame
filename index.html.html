@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>三國養成遊戲</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background-color: #f4f4f4;
+    }
+
+    h1 {
+      margin-top: 30px;
+    }
+
+    .container {
+      margin-top: 40px;
+    }
+
+    button {
+      width: 150px;
+      height: 60px;
+      margin: 10px;
+      font-size: 18px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+<h1>⚔️ 三國養成遊戲 ⚔️</h1>
+
+<div class="container">
+  <button onclick="develop()">發展</button>
+  <button onclick="recruit()">招募</button>
+  <button onclick="expand()">擴張</button>
+  <button onclick="train()">鍛鍊</button>
+  <button onclick="equip()">裝備</button>
+</div>
+
+<p id="log">歡迎來到三國世界！</p>
+
+<script>
+function develop() {
+  document.getElementById("log").innerText = "你進行了發展，資源增加！";
+}
+
+function recruit() {
+  document.getElementById("log").innerText = "你招募了一名武將！";
+}
+
+function expand() {
+  document.getElementById("log").innerText = "你發動了戰爭！";
+}
+
+function train() {
+  document.getElementById("log").innerText = "武將正在鍛鍊！";
+}
+
+function equip() {
+  document.getElementById("log").innerText = "裝備已強化！";
+}
+</script>
+
+</body>
+</html>
