@@ -4,31 +4,88 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>三國養成遊戲</title>
+
   <style>
     body {
+      margin: 0;
       font-family: "微軟正黑體", sans-serif;
+      background: #1e1e2f;
+      color: #fff;
       text-align: center;
-      padding: 20px;
     }
-    .container {
+
+    h1 {
       margin: 20px 0;
     }
-    button {
-      margin: 5px;
-      padding: 10px 20px;
-      font-size: 16px;
+
+    /* 資源欄 */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      background: #2c2c3e;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 10px auto;
+      width: 80%;
     }
+
+    .stat {
+      font-size: 18px;
+    }
+
+    /* 按鈕區 */
+    .container {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    button {
+      background: linear-gradient(145deg, #3a3a5a, #2a2a45);
+      border: none;
+      color: white;
+      padding: 15px 25px;
+      font-size: 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      background: #4a4a7a;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    /* 訊息 */
     #log {
       margin-top: 20px;
       font-size: 18px;
-      min-height: 24px;
+      min-height: 30px;
+      color: #ffd700;
     }
   </style>
 </head>
+
 <body>
 
 <h1>⚔️ 我的三國 ⚔️</h1>
 
+<!-- 資源顯示 -->
+<div class="stats">
+  <div class="stat">💰 金錢：<span id="gold">0</span></div>
+  <div class="stat">👥 武將：<span id="generals">0</span></div>
+  <div class="stat">⚔️ 戰力：<span id="power">0</span></div>
+</div>
+
+<!-- 按鈕 -->
 <div class="container">
   <button onclick="develop()">發展</button>
   <button onclick="recruit()">招募</button>
@@ -40,25 +97,58 @@
 <p id="log">歡迎來到三國世界！</p>
 
 <script>
+let gold = 100;
+let generals = 1;
+let power = 10;
+
+function updateUI(msg) {
+  document.getElementById("gold").innerText = gold;
+  document.getElementById("generals").innerText = generals;
+  document.getElementById("power").innerText = power;
+  document.getElementById("log").innerText = msg;
+}
+
 function develop() {
-  document.getElementById("log").innerText = "你進行了發展，資源增加！";
+  gold += 20;
+  updateUI("發展成功，資源增加！");
 }
 
 function recruit() {
-  document.getElementById("log").innerText = "你招募了一名武將！";
+  if (gold >= 30) {
+    gold -= 30;
+    generals++;
+    power += 5;
+    updateUI("招募成功！");
+  } else {
+    updateUI("金錢不足！");
+  }
 }
 
 function expand() {
-  document.getElementById("log").innerText = "你發動了戰爭！";
+  if (power >= 20) {
+    gold += 50;
+    updateUI("戰爭勝利！");
+  } else {
+    updateUI("戰敗了...");
+  }
 }
 
 function train() {
-  document.getElementById("log").innerText = "武將正在鍛鍊！";
+  power += 5;
+  updateUI("鍛鍊中...");
 }
 
 function equip() {
-  document.getElementById("log").innerText = "裝備已強化！";
+  if (gold >= 20) {
+    gold -= 20;
+    power += 10;
+    updateUI("裝備強化成功！");
+  } else {
+    updateUI("金錢不足！");
+  }
 }
+
+updateUI("歡迎來到三國世界！");
 </script>
 
 </body>
