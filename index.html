@@ -4,184 +4,91 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>三國養成遊戲</title>
-</head>
 <link rel="stylesheet" href="style.css">
+</head>
 <body>
+  <h1>⚔️ 我的三國 ⚔️</h1>
 
-<h1>⚔️ 我的三國 ⚔️</h1>
+  <!-- 玩家狀態 -->
+  <div id="stats"></div>
+  <p id="log"></p>
 
-<div id="stats"></div>
+  <!-- 頁籤 -->
+  <div id="navbar">
+    <button class="tab-btn" data-target="developPage">發展</button>
+    <button class="tab-btn" data-target="recruitPage">招募</button>
+    <button class="tab-btn" data-target="warPage">攻打</button>
+    <button class="tab-btn" data-target="generalsPage">武將</button>
+    <button class="tab-btn" data-target="storePage">商店</button>
+  </div>
 
-<div class="container">
-  <button onclick="developAtk()">發展兵力</button>
-  <button onclick="developDef()">發展國防</button>
-  <button onclick="recruit()">招募（抽卡）</button>
-  <button onclick="findEnemy()">找敵人</button>
-  <button onclick="attackEnemy()">攻打</button>
-  <button onclick="train()">鍛鍊</button>
+  <!-- 各頁面區塊 -->
+  <div id="pages">
+    <!-- 發展 -->
+    <div id="developPage" class="page">
+      <div class="page-content">
+        <button id="btnDevelopAtk">發展兵力</button>
+        <button id="btnDevelopDef">發展國防</button>
+      </div>
+    </div>
+
+    <!-- 招募 -->
+    <div id="recruitPage" class="page">
+      <div class="page-content">
+        <button id="btnRecruit">招募（抽卡）</button>
+      </div>
+    </div>
+
+    <!-- 攻打 -->
+    <div id="warPage" class="page">
+      <div class="page-content">
+        <button id="btnFind">找敵人</button>
+        <button id="btnAttack">攻打</button>
+        <div id="enemy"></div>
+      </div>
+    </div>
+
+    <!-- 武將 -->
+    <div id="generalsPage" class="page">
+      <div class="page-content">
+        <div id="items"></div>
+        <div id="generalsList"></div>
+      </div>
+    </div>
+
+<!-- 商店 -->
+<div id="storePage" class="page">
+  <div class="page-content">
+    <button id="btnBuyFood">購買糧食（+50）💰30</button>
+    <button id="btnBuyStone">購買石頭（+50）💰30</button>
+    <button id="btnBuyHpPack">購買補包 💰50</button>
+    <button id="btnBuyLoyaltyPack">購買封侯令 💰80</button>
+    <button id="btnBuyExpPack">購買經驗禮包 💰100</button>
+  </div>
 </div>
 
-<div class="box">
-  <h3>🏪 商店</h3>
-  <button onclick="buyFood()">購買糧食（+50）💰30</button>
-  <button onclick="buyStone()">購買石頭（+50）💰30</button>
-</div>
+  <!-- 勝敗提示彈窗 -->
+  <div id="gameOverModal" style="
+      display:none;
+      position:fixed;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.5);
+      justify-content:center;
+      align-items:center;
+      z-index:9999;
+  ">
+    <div style="
+        background:#0e0e0e; 
+        padding:20px; 
+        border-radius:10px; 
+        text-align:center;
+        min-width:250px;
+    ">
+      <p id="modalMessage"></p>
+      <p id="modalCountdown"></p>
+    </div>
+  </div>
 
-<div class="box">
-  <h3>敵人</h3>
-  <div id="enemy"></div>
-</div>
-
-<div class="box">
-  <h3>武將</h3>
-  <div id="generalsList"></div>
-</div>
-
-<p id="log"></p>
-
-<script src="state.js"></script>
-<script>
-
-
-// ===== 武將池 =====
-const generalPool = [
-  { name: "關羽", atk: 10, def: 5 },
-  { name: "張飛", atk: 12, def: 3 }
-];
-
-// ===== UI =====
-function updateUI(msg="") {
-  document.getElementById("stats").innerText =
-    `💰${state.gold} 🌾${state.food} 🪨${state.stone} ⚔️${state.attack} 🛡${state.defense} 👥${state.generals.length}`;
-
-  document.getElementById("log").innerText = msg;
-  renderGenerals();
-}
-
-// ===== 武將顯示 =====
-function renderGenerals() {
-  let list = document.getElementById("generalsList");
-  list.innerHTML = "";
-
-  generals.forEach((g) => {
-    let div = document.createElement("div");
-    div.innerText = `${g.name} ⚔️${g.atk} 🛡${g.def}`;
-    list.appendChild(div);
-  });
-}
-
-// ===== 發展 =====
-function developAtk() {
-  if (food < 20) {
-    updateUI("糧食不足！");
-    return;
-  }
-  food -= 20;
-  attack += 5;
-  updateUI("兵力提升！");
-}
-
-function developDef() {
-  if (stone < 20) {
-    updateUI("石頭不足！");
-    return;
-  }
-  stone -= 20;
-  defense += 5;
-  updateUI("國防提升！");
-}
-
-// ===== 商店 =====
-function buyFood() {
-  if (gold < 30) {
-    updateUI("金幣不足！");
-    return;
-  }
-  gold -= 30;
-  food += 50;
-  updateUI("購買糧食成功！");
-}
-
-function buyStone() {
-  if (gold < 30) {
-    updateUI("金幣不足！");
-    return;
-  }
-  gold -= 30;
-  stone += 50;
-  updateUI("購買石頭成功！");
-}
-
-// ===== 抽卡 =====
-function recruit() {
-  if (gold < 50) {
-    updateUI("金幣不足！");
-    return;
-  }
-
-  gold -= 50;
-  let chance = Math.random();
-
-  if (chance < 0.4) {
-    let g = generalPool[Math.floor(Math.random() * generalPool.length)];
-    generals.push({...g});
-    updateUI("🎉 抽到武將：" + g.name);
-  } else {
-    let reward = Math.floor(Math.random() * 50) + 20;
-    gold += reward;
-    updateUI("沒抽到武將，獲得金幣：" + reward);
-  }
-}
-
-// ===== 找敵人 =====
-function findEnemy() {
-  currentEnemy = {
-    atk: Math.floor(Math.random() * 50) + 10,
-    def: Math.floor(Math.random() * 50) + 10
-  };
-
-  document.getElementById("enemy").innerText =
-    `⚔️${currentEnemy.atk} 🛡${currentEnemy.def}`;
-}
-
-// ===== 戰鬥 =====
-function attackEnemy() {
-  if (!currentEnemy) {
-    updateUI("請先找敵人！");
-    return;
-  }
-
-  let totalAtk = attack + generals.reduce((a,g)=>a+g.atk,0);
-
-  if (totalAtk > currentEnemy.def) {
-    let reward = 100;
-    gold += reward;
-    attack -= 5;
-    updateUI("勝利！獲得金幣 " + reward);
-  } else {
-    attack -= 10;
-    updateUI("戰敗...");
-  }
-
-  currentEnemy = null;
-  document.getElementById("enemy").innerText = "";
-}
-
-// ===== 鍛鍊 =====
-function train() {
-  if (generals.length === 0) {
-    updateUI("沒有武將！");
-    return;
-  }
-
-  generals[0].atk += 2;
-  generals[0].def += 2;
-  updateUI("武將變強了！");
-}
-
-// ===== 初始化 =====
-updateUI("開始你的三國之旅！");
-</script>
-
+  <script type="module" src="main.js"></script>
 </body>
 </html>

@@ -4,12 +4,18 @@ body {
   background: #1e1e2f;
   color: white;
   text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* 標題 */
 h1 {
-  margin: 20px;
+  margin: 20px 0;
 }
 
+/* 玩家狀態 & log */
 #stats {
   background: #2c2c3e;
   padding: 15px;
@@ -19,39 +25,87 @@ h1 {
   font-size: 18px;
 }
 
-.container {
-  margin-top: 15px;
+#log {
+  margin-top: 10px;
+  color: gold;
 }
 
-button {
-  margin: 5px;
-  padding: 12px 18px;
-  font-size: 15px;
-  border-radius: 10px;
-  border: none;
+/* 頁籤 */
+#navbar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 0;
+  padding: 10px 0;
+}
+
+.tab-btn {
   background: #3a3a5a;
-  color: white;
+  padding: 8px 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
   cursor: pointer;
+  transition: 0.2s;
 }
 
-button:hover {
+.tab-btn:hover {
   background: #4a4a7a;
 }
 
-.box {
-  margin: 15px auto;
-  padding: 10px;
-  width: 85%;
-  background: #2a2a45;
+/* 分頁區塊 - 滿版淺色背景 */
+.page {
+  display: none;
+  background: #2c2c45; /* 淺色版面 */
+  width: 100%;
+  flex: 1; /* 撐滿頁籤以下高度 */
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center; /* 水平置中 */
+  align-items: flex-start; /* 上方開始排列 */
+}
+
+/* 內容框 */
+.page-content {
+  background: #3a3a5a;
   border-radius: 10px;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 250px;
+  align-items: center; /* 框內按鈕置中 */
+}
+
+/* 按鈕 */
+button {
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  background: #5a5a7a;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+  min-width: 140px;
+}
+
+button:hover {
+  background: #6a6a9a;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+/* 武將列表 */
+#generalsList {
+  margin-top: 15px;
+  width: 100%;
 }
 
 #generalsList div {
   padding: 5px;
   border-bottom: 1px solid #444;
-}
-
-#log {
-  margin-top: 15px;
-  color: gold;
 }
