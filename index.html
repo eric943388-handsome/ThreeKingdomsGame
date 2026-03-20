@@ -52,7 +52,7 @@ const generalPool = [
 // ===== UI =====
 function updateUI(msg="") {
   document.getElementById("stats").innerText =
-    `💰${gold} 🌾${food} 🪨${stone} ⚔️${attack} 🛡${defense} 👥${generals.length}`;
+    `💰${state.gold} 🌾${state.food} 🪨${state.stone} ⚔️${state.attack} 🛡${state.defense} 👥${state.generals.length}`;
 
   document.getElementById("log").innerText = msg;
   renderGenerals();
