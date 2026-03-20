@@ -1,5 +1,5 @@
 export const state = {
-  gold: 100,
+  gold: 500,
   food: 100,
   stone: 100,
   attack: 20,
