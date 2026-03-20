@@ -5,67 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>三國養成遊戲</title>
 
-<style>
-body {
-  margin: 0;
-  font-family: "微軟正黑體", sans-serif;
-  background: #1e1e2f;
-  color: white;
-  text-align: center;
-}
-
-h1 {
-  margin: 20px;
-}
-
-#stats {
-  background: #2c2c3e;
-  padding: 15px;
-  margin: 10px auto;
-  width: 85%;
-  border-radius: 10px;
-  font-size: 18px;
-}
-
-.container {
-  margin-top: 15px;
-}
-
-button {
-  margin: 5px;
-  padding: 12px 18px;
-  font-size: 15px;
-  border-radius: 10px;
-  border: none;
-  background: #3a3a5a;
-  color: white;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #4a4a7a;
-}
-
-.box {
-  margin: 15px auto;
-  padding: 10px;
-  width: 85%;
-  background: #2a2a45;
-  border-radius: 10px;
-}
-
-#generalsList div {
-  padding: 5px;
-  border-bottom: 1px solid #444;
-}
-
-#log {
-  margin-top: 15px;
-  color: gold;
-}
-</style>
 </head>
-
+<link rel="stylesheet" href="style.css">
 <body>
 
 <h1>⚔️ 我的三國 ⚔️</h1>
@@ -202,8 +143,8 @@ function recruit() {
 // ===== 找敵人 =====
 function findEnemy() {
   currentEnemy = {
-    atk: Math.floor(Math.random() * 30) + 10,
-    def: Math.floor(Math.random() * 30) + 10
+    atk: Math.floor(Math.random() * 50) + 10,
+    def: Math.floor(Math.random() * 50) + 10
   };
 
   document.getElementById("enemy").innerText =
