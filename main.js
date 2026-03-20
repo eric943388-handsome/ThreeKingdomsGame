@@ -3,7 +3,7 @@ import { findEnemy, attackEnemy } from "./war.js";
 import { updateUI } from "./ui.js";
 import { useHpPack, useLoyaltyPack, useExpPack } from "./useitems.js";
 import { state } from "./state.js";
-import { buyFood, buyStone } from "./store.js";
+import { buyFood, buyStone, buyHpPack, buyLoyaltyPack, buyExpPack } from "./store.js";
 import { developAtk, developDef } from "./develop.js";
 
 document.addEventListener("DOMContentLoaded", () => {

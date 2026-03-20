@@ -4,14 +4,14 @@ import { state } from "./state.js";
 export function buyFood() {
   if (state.gold < 30) return "金幣不足！";
   state.gold -= 30;
-  state.food += 50;
+  state.food += 20;
   return "購買糧食成功！";
 }
 
 export function buyStone() {
-  if (state.gold < 30) return "金幣不足！";
-  state.gold -= 30;
-  state.stone += 50;
+  if (state.gold < 50) return "金幣不足！";
+  state.gold -= 50;
+  state.stone += 20;
   return "購買石頭成功！";
 }
 

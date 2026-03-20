@@ -1,5 +1,6 @@
 import { state } from "./state.js";
 
+
 export function useHpPack(index) {
   const g = state.generals[index];
   if (!g) return "武將不存在！";
@@ -22,7 +23,10 @@ export function useExpPack(index) {
   const g = state.generals[index];
   if (!g) return "武將不存在！";
   if (state.expPacks <= 0) return "沒有經驗禮包！";
-  g.atk += 2; // 經驗禮包鍛鍊
   state.expPacks -= 1;
-  return `${g.name} 使用經驗禮包，攻擊提升 2！`;
+  g.atk += 10;
+  g.maxHp += 10; // 增加最大血量
+  g.hp = Math.min(g.hp + 10, g.maxHp); // 補血，但不超過 maxHp
+
+  updateUI(`${g.name} 使用經驗禮包，攻擊 +10，最大血量 +10`);
 }
