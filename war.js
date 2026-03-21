@@ -121,11 +121,11 @@ export function attackEnemy() {
 
   if (state.activeGeneral) {
     const g = state.activeGeneral;
-    playerAtk = state.attack+state.activeGeneral.atk
+    playerAtk = state.attack
 
     // 武將本身攻擊 + 技能加成
     const skillApplied = applyGeneralSkills(g, g.atk, g.def || 0);
-    playerAtk += skillApplied.atk+g.atk;
+    playerAtk += skillApplied.atk;
     playerDef += skillApplied.def;
 
     // 技能訊息
