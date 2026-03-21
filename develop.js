@@ -3,12 +3,20 @@ import { state } from "./state.js";
 import { updateUI } from "./ui.js";
 
 export function developAtk() {
-  if (state.food < 20) {
-    return "糧食不足！";
-  }
-  state.food -= 20;
+  // ===== 根據當前兵力計算消耗 =====
+  let cost = 20; // 預設消耗
+
+  if (state.attack >= 20 && state.attack < 50) cost = 30;
+  else if (state.attack >= 50 && state.attack < 100) cost = 50;
+  else if (state.attack >= 100 && state.attack < 150) cost = 75;
+  else if (state.attack >= 150) cost = 100; // 可以繼續擴展
+
+  if (state.food < cost) return `糧食不足，需要 ${cost} 糧食`;
+
+  state.food -= cost;
   state.attack += 5;
-  return "兵力提升！";
+
+  return `兵力提升 💪 攻擊 +5 (消耗 ${cost} 糧食)`;
 }
 
 export function developDef() {

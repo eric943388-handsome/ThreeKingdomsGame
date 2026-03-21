@@ -1,4 +1,3 @@
-// itemPool.js
 import { state } from "./state.js";
 
 /**
@@ -30,7 +29,7 @@ export const itemPool = [
       if (generalIndex !== null && state.generals[generalIndex]) {
         const g = state.generals[generalIndex];
         g.loyalty = Math.min(100, g.loyalty + 10);
-        return `${g.name} 主公英明!忠誠度提升！`;
+        return `${g.name} 主公英明! 忠誠度提升！`;
       } else {
         state.loyaltyPacks++;
         return "封侯令 x1";
@@ -75,6 +74,15 @@ export const itemPool = [
     apply: () => {
       state.food += 50;
       return "糧食 x50";
+    }
+  },
+  // ===== 新增高級武將卷 =====
+  {
+    name: "高級武將卷",
+    weight: 1,  // 可調整掉落機率
+    apply: () => {
+      state.eliteScrolls++;
+      return "💎 高級武將卷 x1";
     }
   }
 ];

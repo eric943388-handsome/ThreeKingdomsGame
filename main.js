@@ -7,6 +7,7 @@ import { itemPool } from "./itemPool.js";
 import { setActiveGeneral, sellGeneral } from "./general.js";
 import { buyFood, buyStone, buyHpPack, buyLoyaltyPack, buyExpPack } from "./store.js";
 import { developAtk, developDef } from "./develop.js";
+import { useEliteScroll } from "./eliteRecruit.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // ===============================
@@ -28,48 +29,79 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ===============================
-  // 武將按鈕事件代理（固定道具效果，不再隨機）
+  // 武將按鈕事件代理
   // ===============================
-  const generalsList = document.getElementById("generalsList");
-  generalsList.addEventListener("click", (e) => {
-    const btn = e.target;
-    const index = parseInt(btn.dataset.index);
-    if (isNaN(index)) return;
+  // 武將按鈕事件代理
+const generalsList = document.getElementById("generalsList");
+generalsList.addEventListener("click", (e) => {
+  const btn = e.target.closest("button"); // 確保抓到按鈕本身
+  if (!btn) return;
 
-    let msg = "";
+  const index = parseInt(btn.dataset.index);
+  if (isNaN(index)) return;
 
-    if (btn.classList.contains("btn-hp")) {
-      if (state.hpPacks <= 0) msg = "沒有補包！";
-      else {
-        msg = itemPool.find((i) => i.name === "補包").apply(index);
-        state.hpPacks--;
-      }
-    } else if (btn.classList.contains("btn-loyalty")) {
-      if (state.loyaltyPacks <= 0) msg = "沒有封侯令！";
-      else {
-        msg = itemPool.find((i) => i.name === "封侯令").apply(index);
-        state.loyaltyPacks--;
-      }
-    } else if (btn.classList.contains("btn-exp")) {
-      if (state.expPacks <= 0) msg = "沒有經驗禮包！";
-      else {
-        msg = itemPool.find((i) => i.name === "經驗禮包").apply(index);
-        state.expPacks--;
-      }
-    } else if (btn.classList.contains("btn-active")) {
-      msg = setActiveGeneral(index);
-    } else if (btn.classList.contains("btn-sell")) {
-      msg = sellGeneral(index);
+  let msg = "";
+
+  // 使用補包
+  if (btn.classList.contains("btn-hp")) {
+    if (state.hpPacks <= 0) msg = "沒有補包！";
+    else {
+      msg = itemPool.find((i) => i.name === "補包").apply(index);
+      state.hpPacks--;
     }
 
-    refreshUI(msg);
-  });
+  // 使用封侯令
+  } else if (btn.classList.contains("btn-loyalty")) {
+    if (state.loyaltyPacks <= 0) msg = "沒有封侯令！";
+    else {
+      msg = itemPool.find((i) => i.name === "封侯令").apply(index);
+      state.loyaltyPacks--;
+    }
+
+  // 使用經驗禮包
+  } else if (btn.classList.contains("btn-exp")) {
+    if (state.expPacks <= 0) msg = "沒有經驗禮包！";
+    else {
+      msg = itemPool.find((i) => i.name === "經驗禮包").apply(index);
+      state.expPacks--;
+    }
+
+  // 設為出戰 / 取消出戰
+  } else if (btn.classList.contains("btn-active")) {
+    const g = state.generals[index];
+    if (!g) return;
+
+    if (state.activeGeneral === g) {
+      // 取消出戰
+      state.activeGeneral = null;
+      btn.innerText = "出戰";
+      msg = `${g.name} 已取消出戰`;
+    } else {
+      // 設為出戰
+      state.activeGeneral = g;
+      // 重置其他所有出戰按鈕文字
+      document.querySelectorAll(".btn-active").forEach(b => b.innerText = "出戰");
+      btn.innerText = "取消出戰";
+      msg = `${g.name} 出戰中`;
+    }
+
+  // 出售武將
+  } else if (btn.classList.contains("btn-sell")) {
+    msg = sellGeneral(index);
+  }
+
+  // 刷新 UI
+  updateUI(msg);
+});
 
   // ===============================
   // 招募按鈕
   // ===============================
   document.getElementById("btnRecruit")?.addEventListener("click", () =>
     refreshUI(recruit())
+  );
+  document.getElementById("btnEliteRecruit")?.addEventListener("click", () =>
+    refreshUI(useEliteScroll())
   );
 
   // ===============================

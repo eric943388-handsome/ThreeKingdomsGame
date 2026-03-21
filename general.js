@@ -25,10 +25,15 @@ export function useExpPack(index) {
 
 export function setActiveGeneral(index) {
   const g = state.generals[index];
-  if (!g) return "武將不存在！";
+  if (!g) return "武將不存在";
+
+  if (state.activeGeneral === g) {
+    state.activeGeneral = null;
+    return { msg: `${g.name} 已取消出戰`, index, active: false };
+  }
 
   state.activeGeneral = g;
-  return `${g.name} 出戰！`;
+  return { msg: `${g.name} 設為出征`, index, active: true };
 }
 
 export function sellGeneral(index) {
