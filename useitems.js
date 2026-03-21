@@ -15,7 +15,7 @@ export function useLoyaltyPack(index) {
   const g = state.generals[index];
   if (!g) return "武將不存在！";
   if (state.loyaltyPacks <= 0) return "沒有封侯令！";
-  g.loyalty = Math.min(100, g.loyalty + 10);
+  g.loyalty = Math.min(100, g.loyalty + 20);
   state.loyaltyPacks -= 1;
   return `${g.name} 忠誠度提升！`;
 }
