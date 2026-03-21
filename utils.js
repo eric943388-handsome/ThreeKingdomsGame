@@ -7,3 +7,8 @@ export function weightedRandom(pool) {
   }
   return pool[pool.length - 1];
 }
+
+//階級戰力隨機工具
+export function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}

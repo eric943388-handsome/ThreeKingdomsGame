@@ -1,5 +1,5 @@
 import { state, resetGame } from "./state.js";
-import { weightedRandom } from "./utils.js";
+import { weightedRandom, randInt } from "./utils.js";
 import { updateUI } from "./ui.js";
 import { getRandomItem } from "./itemPool.js";
 
@@ -65,34 +65,42 @@ function showGameOverModal(message) {
  * baseAtk / baseDef: 基礎隨機值範圍 10~25
  */
 function generateEnemyStats(territory = 0) {
-  // 基礎值 10~25
-  let baseAtk = Math.floor(Math.random() * 20) + 10;
-  let baseDef = Math.floor(Math.random() * 20) + 10;
 
-  // 特異區 30~39
-  if (territory >= 30 && territory <= 39) {
+  let atkMin, atkMax, defMin, defMax;
+
+  // ===== 根據領土決定區間 =====
+  if (territory < 10) {
+    atkMin = 10; atkMax = 30;
+    defMin = 10; defMax = 30;
+  }
+  else if (territory < 20) {
+    atkMin = 25; atkMax = 60;
+    defMin = 25; defMax = 40;
+  }
+  else if (territory < 30) {
+    atkMin = 40; atkMax = 70;
+    defMin = 40; defMax = 60;
+  }
+  else if (territory < 40) {
+    // ===== 特異區 =====
     if (Math.random() < 0.5) {
       // 高攻低防
-      baseAtk *= 2;
-      baseDef = Math.floor(baseDef * 0.5);
+      atkMin = 50; atkMax = 120;
+      defMin = 20; defMax = 40;
     } else {
       // 高防低攻
-      baseDef *= 2;
-      baseAtk = Math.floor(baseAtk * 0.5);
+      atkMin = 20; atkMax = 40;
+      defMin = 80; defMax = 120;
     }
   }
-
-  // 領土倍率
-  let factor = 1;
-  if (territory >= 49) factor = 2.5;
-  else if (territory >= 40) factor = 2;
-  else if (territory >= 30) factor = 1.8;
-  else if (territory >= 20) factor = 1.5;
-  else if (territory >= 10) factor = 1.2;
+  else {
+    atkMin = 100; atkMax = 200;
+    defMin = 100; defMax = 200;
+  }
 
   return {
-    atk: Math.floor(baseAtk * factor),
-    def: Math.floor(baseDef * factor),
+    atk: randInt(atkMin, atkMax),
+    def: randInt(defMin, defMax)
   };
 }
 
@@ -129,15 +137,16 @@ export function attackEnemy() {
   msg += win ? "勝利！" : "戰敗...";
 
   // ===== 兵力損耗 =====
-  state.attack = Math.floor(Math.max(0, state.attack - (enemy.atk)*0.2));
+  const loss = Math.floor(enemy.atk * 0.2);
+  state.attack = Math.max(0, state.attack - loss);
   let lostAtk = Math.max(0, enemy.atk - state.defense);
-  state.attack = Math.max(0, state.attack - lostAtk);
+  state.attack = Math.floor(Math.max(0, state.attack - lostAtk));
   msg += ` 兵力減少 ${lostAtk}`;
 
   // ===== 武將血量 & 忠誠損耗 =====
   if (state.activeGeneral) {
     const g = state.activeGeneral;
-    const damage = Math.max(0, enemy.atk / 4);
+    const damage = Math.floor(Math.max(0, enemy.atk / 4));
     g.hp -= damage;
     msg += `\n${g.name} 受到 ${damage} 傷害`;
 
@@ -157,8 +166,8 @@ export function attackEnemy() {
         msg += `\n${g.name} 忠誠低，你這昏君，叛逃!!`;
         state.generals = state.generals.filter(x => x !== g);
         state.activeGeneral = null;
-        state.attack -= state.attack / 4;
-        state.defense -= state.defense / 4;
+        state.attack = Math.floor(state.attack - state.attack / 4);
+        state.defense = Math.floor(state.defense - state.defense / 4);
       }
     }
   }
