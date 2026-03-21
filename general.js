@@ -1,51 +1,55 @@
-// general.js
+//general.js
 import { state } from "./state.js";
+import { getRandomItem } from "./itemPool.js";
 
-/**
- * 使用補包
- */
-export function useHpPack(index){
-  const g = state.generals[index];
-  if(!g || state.hpPacks <= 0) return "沒有補包！";
-  g.hp = g.maxHp;
+export function useHpPack(index) {
+  if (!state.generals[index]) return "武將不存在！";
+  if (state.hpPacks <= 0) return "沒有補包！";
   state.hpPacks--;
-  return `${g.name} 血量已恢復！`;
+  return getRandomItem(index); // 作用於武將
 }
 
-/**
- * 使用封侯令
- */
-export function useLoyaltyPack(index){
-  const g = state.generals[index];
-  if(!g || state.loyaltyPacks <= 0) return "沒有封侯令！";
-  g.loyalty = Math.min(100, g.loyalty + 10);
+export function useLoyaltyPack(index) {
+  if (!state.generals[index]) return "武將不存在！";
+  if (state.loyaltyPacks <= 0) return "沒有封侯令！";
   state.loyaltyPacks--;
-  return `${g.name} 忠誠度提升 10！`;
+  return getRandomItem(index);
 }
 
-/**
- * 使用經驗禮包
- */
-export function useExpPack(index){
-  const g = state.generals[index];
-  if(!g || state.expPacks <= 0) return "沒有經驗禮包！";
-  const atkInc = Math.floor(Math.random()*3)+1;
-  const hpInc = Math.floor(Math.random()*6)+5;
-  g.atk += atkInc;
-  g.maxHp += hpInc;
-  g.hp = Math.min(g.maxHp, g.hp+hpInc);
+export function useExpPack(index) {
+  if (!state.generals[index]) return "武將不存在！";
+  if (state.expPacks <= 0) return "沒有經驗禮包！";
   state.expPacks--;
-  return `${g.name} 獲得鍛鍊！攻擊 +${atkInc}, 最大血量 +${hpInc}`;
+  return getRandomItem(index);
+}
+/**
+ * 設為出戰武將
+ * @param {number} index 武將索引
+ * @returns {string} 操作訊息
+ */
+export function setActiveGeneral(index) {
+  const g = state.generals[index];
+  if (!g) return "武將不存在！";
+
+  state.activeGeneral = g;
+  return `${g.name} 出戰！`;
 }
 
 /**
- * 武將鍛鍊
+ * 出售武將，出售獲得金幣 50
+ * @param {number} index 武將索引
+ * @returns {string} 操作訊息
  */
-export function train(index){
+export function sellGeneral(index) {
   const g = state.generals[index];
-  if(!g) return "沒有武將可以鍛鍊！";
-  g.atk += 2;
-  g.maxHp += 5;
-  g.hp = Math.min(g.maxHp, g.hp+5);
-  return `${g.name} 經過鍛鍊，攻擊 +2, 最大血量 +5`;
+  if (!g) return "武將不存在！";
+
+  state.gold += 50;
+
+  // 若出售的是出戰武將，清空出戰狀態
+  if (state.activeGeneral === g) state.activeGeneral = null;
+
+  state.generals.splice(index, 1);
+
+  return `${g.name} 已出售`;
 }

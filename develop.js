@@ -13,11 +13,11 @@ export function developAtk() {
 }
 
 export function developDef() {
-  if (state.stone < 20) {
+  if (state.stone < 40) {
     updateUI("石頭不足！");
     return;
   }
-  state.stone -= 20;
+  state.stone -= 40;
   state.defense += 5;
   updateUI("國防提升！");
 }

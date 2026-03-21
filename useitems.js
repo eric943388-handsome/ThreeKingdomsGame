@@ -1,4 +1,5 @@
 import { state } from "./state.js";
+import { updateUI } from "./ui.js"; 
 
 
 export function useHpPack(index) {

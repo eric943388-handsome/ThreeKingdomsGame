@@ -1,5 +1,6 @@
 import { state } from "./state.js";
 
+
 export function updateUI(msg = "") {
   document.getElementById("stats").innerText =
     `💰${state.gold} 🌾${state.food} 🪨${state.stone} ⚔️${state.attack} 🛡${state.defense} 👥${state.generals.length} 🏰${state.territory}`;
@@ -13,12 +14,20 @@ export function updateUI(msg = "") {
     const div = document.createElement("div");
     div.className = "general-card";
     div.innerHTML = `
-      <strong>${g.name}</strong><br>
-      ⚔️${g.atk} ❤️${g.hp}/${g.maxHp} 忠誠${g.loyalty}<br>
-      <button class="btn-hp" data-index="${index}">使用補包</button>
-      <button class="btn-loyalty" data-index="${index}">使用封侯令</button>
-      <button class="btn-exp" data-index="${index}">使用經驗禮包</button>
-    `;
+  <strong>${g.name}${state.activeGeneral === g ? " ⭐出戰中" : ""}</strong><br>
+
+⚔️${g.atk} ❤️${g.hp}/${g.maxHp} 忠誠度 ${g.loyalty}<br>
+
+<button class="btn-hp" data-index="${index}">補包</button>
+
+<button class="btn-loyalty" data-index="${index}">封侯令</button>
+
+<button class="btn-exp" data-index="${index}">經驗</button>
+
+<button class="btn-active" data-index="${index}">設為出戰</button>
+
+<button class="btn-sell" data-index="${index}">出售</button>
+`;
     generalsList.appendChild(div);
   });
 

@@ -1,38 +1,23 @@
 // store.js
 import { state } from "./state.js";
+import { itemPool, getRandomItem } from "./itemPool.js";
 
-export function buyFood() {
-  if (state.gold < 30) return "金幣不足！";
-  state.gold -= 30;
-  state.food += 20;
-  return "購買糧食成功！";
+/**
+ * 購買道具統一函式
+ */
+function buyItem(name, cost) {
+  if (state.gold < cost) return "金幣不足！";
+  state.gold -= cost;
+
+  const item = itemPool.find(i => i.name === name);
+  if (!item) return "道具不存在！";
+  const msg = item.apply(); // 套用效果
+  return `購買 ${name} 成功！(${msg})`;
 }
 
-export function buyStone() {
-  if (state.gold < 50) return "金幣不足！";
-  state.gold -= 50;
-  state.stone += 20;
-  return "購買石頭成功！";
-}
-
-// 新增道具購買
-export function buyHpPack() {
-  if (state.gold < 50) return "金幣不足！";
-  state.gold -= 50;
-  state.hpPacks += 1;
-  return "購買補包成功！";
-}
-
-export function buyLoyaltyPack() {
-  if (state.gold < 80) return "金幣不足！";
-  state.gold -= 80;
-  state.loyaltyPacks += 1;
-  return "購買封侯令成功！";
-}
-
-export function buyExpPack() {
-  if (state.gold < 100) return "金幣不足！";
-  state.gold -= 100;
-  state.expPacks += 1;
-  return "購買經驗禮包成功！";
-}
+// 商店呼叫
+export const buyFood = () => buyItem("糧食", 30);
+export const buyStone = () => buyItem("石頭", 50);
+export const buyHpPack = () => buyItem("補包", 50);
+export const buyLoyaltyPack = () => buyItem("封侯令", 80);
+export const buyExpPack = () => buyItem("經驗禮包", 100);

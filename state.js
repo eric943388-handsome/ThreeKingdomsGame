@@ -1,5 +1,5 @@
 export const state = {
-  gold: 500,
+  gold: 9999,
   food: 100,
   stone: 100,
   attack: 20,
@@ -9,11 +9,12 @@ export const state = {
   hpPacks: 0,
   loyaltyPacks: 0,
   expPacks: 0,
-  currentEnemy: null
+  currentEnemy: null,
+  activeGeneral: null,
 };
 
 export function resetGame() {
-  state.gold = 100;
+  state.gold = 700;
   state.food = 100;
   state.stone = 100;
   state.attack = 20;
@@ -23,5 +24,6 @@ export function resetGame() {
   state.hpPacks = 0;
   state.loyaltyPacks = 0;
   state.expPacks = 0;
-  state.currentEnemy = null;
+  state.currentEnemy = null,
+  state.activeGeneral= null;
 }
