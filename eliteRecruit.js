@@ -5,9 +5,6 @@ import { state } from "./state.js";
 import { getRandomItem } from "./itemPool.js";
 
 export function eliteRecruit() {
-  if (state.gold < 200) return "金幣不足，招募失敗";
-  state.gold -= 200;
-
   const rand = Math.random();
   let msg = "";
 

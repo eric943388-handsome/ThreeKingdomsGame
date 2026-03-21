@@ -1,3 +1,4 @@
+// war.js
 import { state, resetGame } from "./state.js";
 import { weightedRandom, randInt } from "./utils.js";
 import { updateUI } from "./ui.js";
@@ -14,23 +15,9 @@ const RESET_COUNTDOWN = 3;
 
 /**
  * 計算武將叛逃機率
- * 忠誠 100 -> 0% 叛逃
- * 忠誠 0   -> 100% 叛逃
- * 曲線：1 - (loyalty / 100)^2
  */
 function calculateEscapeChance(loyalty) {
   return 1 - Math.pow(loyalty / 100, 2);
-}
-
-/**
- * 掉落道具
- */
-function dropItem(win) {
-  const rate = win ? dropRates.win : dropRates.lose;
-  if (Math.random() < rate) {
-    return getRandomItem();
-  }
-  return null;
 }
 
 /**
@@ -61,45 +48,24 @@ function showGameOverModal(message) {
 }
 
 /**
- * 生成敵人數值，考慮領土倍率與特異區
- * baseAtk / baseDef: 基礎隨機值範圍 10~25
+ * 生成敵人數值
  */
 function generateEnemyStats(territory = 0) {
-
   let atkMin, atkMax, defMin, defMax;
 
-  // ===== 根據領土決定區間 =====
   if (territory < 10) {
-    atkMin = 15; atkMax = 35;
-    defMin = 15; defMax = 35;
-  }
-  else if (territory < 20) {
-    atkMin = 35; atkMax = 60;
-    defMin = 35; defMax = 60;
-  }
-  else if (territory < 30) {
-    atkMin = 40; atkMax = 80;
-    defMin = 40; defMax = 80;
-  }
-  else if (territory < 40) {
-    // ===== 特異區 =====
-    if (Math.random() < 0.5) {
-      // 高攻低防
-      atkMin = 50; atkMax = 140;
-      defMin = 20; defMax = 40;
-    } else {
-      // 高防低攻
-      atkMin = 20; atkMax = 50;
-      defMin = 50; defMax = 140;
-    }
-  }
-  else if (territory < 49) {
-    atkMin = 100; atkMax = 200;
-    defMin = 100; defMax = 200;
-  }
-  else {
-    atkMin = 250; atkMax = 350;
-    defMin = 250; defMax = 350;
+    atkMin = 15; atkMax = 35; defMin = 15; defMax = 35;
+  } else if (territory < 20) {
+    atkMin = 35; atkMax = 60; defMin = 35; defMax = 60;
+  } else if (territory < 30) {
+    atkMin = 40; atkMax = 80; defMin = 40; defMax = 80;
+  } else if (territory < 40) {
+    if (Math.random() < 0.5) { atkMin = 50; atkMax = 140; defMin = 20; defMax = 40; }
+    else { atkMin = 20; atkMax = 50; defMin = 50; defMax = 140; }
+  } else if (territory < 49) {
+    atkMin = 100; atkMax = 200; defMin = 100; defMax = 200;
+  } else {
+    atkMin = 250; atkMax = 350; defMin = 250; defMax = 350;
   }
 
   return {
@@ -108,8 +74,9 @@ function generateEnemyStats(territory = 0) {
   };
 }
 
-
-// 計算武將技能加成
+/**
+ * 套用武將技能加成
+ */
 function applyGeneralSkills(general, baseAtk, baseDef) {
   let atk = baseAtk;
   let def = baseDef;
@@ -134,10 +101,8 @@ export function findEnemy() {
     showGameOverModal("💀 金幣不足，無法出征，坐以待斃！");
     return;
   }
-
   state.gold -= 20;
   state.currentEnemy = generateEnemyStats(state.territory);
-
   updateUI("找到敵人！花費金幣 20");
 }
 
@@ -150,48 +115,42 @@ export function attackEnemy() {
   const enemy = state.currentEnemy;
   let msg = "";
 
-  // ===== 玩家總攻擊力 / 防禦力 =====
+  // 玩家總戰力
   let playerAtk = state.attack;
   let playerDef = state.defense;
 
-  // 如果有出戰武將，加上武將攻擊
   if (state.activeGeneral) {
     const g = state.activeGeneral;
-    playerAtk += g.atk;
 
-    // 套用技能倍率
+    // 武將本身攻擊 + 技能加成
+    const skillApplied = applyGeneralSkills(g, g.atk, g.def || 0);
+    playerAtk += skillApplied.atk;
+    playerDef += skillApplied.def;
+
+    // 技能訊息
     if (g.skills && g.skills.length > 0) {
       g.skills.forEach(skill => {
         if (skill.type === "passive") {
-          if (skill.target === "atk") {
-            const prevAtk = playerAtk;
-            playerAtk = Math.floor(prevAtk * skill.multiplier);
-            msg += `\n${g.name} 技能觸發！攻擊力 x${skill.multiplier} → ${playerAtk}`;
-          }
-          if (skill.target === "def") {
-            const prevDef = playerDef;
-            playerDef = Math.floor(prevDef * skill.multiplier);
-            msg += `\n${g.name} 技能觸發！防禦力 x${skill.multiplier} → ${playerDef}`;
-          }
+          if (skill.target === "atk") msg += `\n${g.name} 技能觸發！攻擊力 x${skill.multiplier} → ${skillApplied.atk}`;
+          if (skill.target === "def") msg += `\n${g.name} 技能觸發！防禦力 x${skill.multiplier} → ${playerDef}`;
         }
       });
     }
   }
 
-  // ===== 勝負判定 =====
+  // 勝負判定
   const win = playerAtk >= enemy.def;
   msg += win ? "\n勝利！" : "\n戰敗...";
 
-  // ===== 兵力損耗 =====
-  const fixedLoss = Math.floor(enemy.atk * 0.2); // 每次戰鬥固定消耗
+  // 兵力損耗
+  const fixedLoss = Math.floor(enemy.atk * 0.2);
   state.attack = Math.max(0, state.attack - fixedLoss);
   msg += `\n兵力固定消耗 ${fixedLoss}`;
-
-  const extraLoss = Math.max(0, enemy.atk - playerDef); // 防禦不足額外損耗
+  const extraLoss = Math.max(0, enemy.atk - playerDef);
   state.attack = Math.max(0, state.attack - extraLoss);
   if (extraLoss > 0) msg += `\n兵力額外損耗 ${extraLoss}（敵人攻擊高於防禦）`;
 
-  // ===== 武將血量 & 忠誠損耗 =====
+  // 武將血量 & 忠誠損耗
   if (state.activeGeneral) {
     const g = state.activeGeneral;
     const damage = Math.floor(enemy.atk / 4);
@@ -205,7 +164,6 @@ export function attackEnemy() {
     } else {
       g.loyalty -= 5;
       msg += `\n${g.name} 忠誠下降 5`;
-
       if (Math.random() < calculateEscapeChance(g.loyalty)) {
         msg += `\n${g.name} 忠誠低，你這昏君，叛逃!!`;
         state.generals = state.generals.filter(x => x !== g);
@@ -216,23 +174,24 @@ export function attackEnemy() {
     }
   }
 
-  // ===== 掉落道具（統一用 itemPool） =====
-  const rate = win ? 0.5 : 0.3;
-  if (Math.random() < rate) {
+  // 掉落道具
+  const dropRate = win ? dropRates.win : dropRates.lose;
+  if (Math.random() < dropRate) {
     const dropMsg = getRandomItem();
     if (dropMsg) msg += `\n獲得 ${dropMsg}`;
   }
-  // 固定金幣獎勵
+
+  // 金幣獎勵
   state.gold += win ? 100 : 30;
 
-  // ===== 領土變化 =====
+  // 領土變化
   state.territory += win ? 1 : -1;
 
   // 遊戲結束檢查
   if (state.territory <= 0) showGameOverModal("💀 領土歸零，遊戲結束！");
   else if (state.territory >= 50) showGameOverModal("👑 你統一天下了！");
 
-  // 清空當前敵人
+  // 清空敵人
   state.currentEnemy = null;
 
   return msg;

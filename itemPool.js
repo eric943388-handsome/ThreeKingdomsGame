@@ -79,7 +79,7 @@ export const itemPool = [
   // ===== 新增高級武將卷 =====
   {
     name: "高級武將卷",
-    weight: 1,  // 可調整掉落機率
+    weight: 0.8,  // 可調整掉落機率
     apply: () => {
       state.eliteScrolls++;
       return "💎 高級武將卷 x1";

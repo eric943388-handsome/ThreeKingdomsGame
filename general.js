@@ -40,7 +40,7 @@ export function sellGeneral(index) {
   const g = state.generals[index];
   if (!g) return "武將不存在！";
 
-  state.gold += 50;
+  state.gold += 200;
   if (state.activeGeneral === g) state.activeGeneral = null;
   state.generals.splice(index, 1);
 
