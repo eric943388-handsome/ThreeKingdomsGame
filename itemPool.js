@@ -30,7 +30,7 @@ export const itemPool = [
       if (generalIndex !== null && state.generals[generalIndex]) {
         const g = state.generals[generalIndex];
         g.loyalty = Math.min(100, g.loyalty + 10);
-        return `${g.name} 忠誠度提升！`;
+        return `${g.name} 主公英明!忠誠度提升！`;
       } else {
         state.loyaltyPacks++;
         return "封侯令 x1";
@@ -55,7 +55,7 @@ export const itemPool = [
   },
   {
     name: "金幣",
-    weight: 1,
+    weight: 0.8,
     apply: () => {
       state.gold += 200;
       return "金幣 x200";
