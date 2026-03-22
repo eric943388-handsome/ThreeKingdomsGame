@@ -133,7 +133,7 @@ export function attackEnemy() {
   msg += win ? "\n勝利！" : "\n戰敗...";
 
   // ===== 兵力損耗 =====
-  const fixedLoss = Math.floor(enemy.atk * 0.2);
+  const fixedLoss = Math.floor(enemy.atk * 0.125);
   state.attack = Math.max(0, state.attack - fixedLoss);
   msg += `\n兵力固定消耗 ${fixedLoss}`;
 
@@ -144,7 +144,7 @@ export function attackEnemy() {
   // ===== 武將血量 & 忠誠損耗 =====
   if (state.activeGeneral) {
     const g = state.activeGeneral;
-    const damage = Math.floor(enemy.atk / 4);
+    const damage = Math.max(0,Math.floor(enemy.atk / 4) - Math.floor(playerDef / 5));
     g.hp -= damage;
     msg += `\n${g.name} 受到 ${damage} 傷害`;
 
