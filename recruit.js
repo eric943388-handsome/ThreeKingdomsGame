@@ -22,14 +22,6 @@ export function recruit() {
     // ⭐ 一定要有這行（防止重複）
     warriorPool.splice(warriorPool.indexOf(g), 1);
 
-    state.generals.push({
-      name: g.name,
-      atk: g.atk,
-      hp: g.hp,
-      maxHp: g.maxHp,
-      loyalty: g.loyalty
-    });
-
     // 加入玩家武將列表
     state.generals.push({
       name: g.name,

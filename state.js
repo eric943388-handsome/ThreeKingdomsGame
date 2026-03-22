@@ -11,7 +11,7 @@ export const state = {
   expPacks: 0,
   currentEnemy: null,
   activeGeneral: null,
-    eliteScrolls: 100, // 新增高級武將卷
+    eliteScrolls: 0, // 新增高級武將卷
 };
 
 export function resetGame() {
