@@ -1,3 +1,8 @@
+import { warriorPool } from "./warriorPool.js";
+import { eliteWarriorPool } from "./eliteWarriorPool.js";
+import { originalWarriorPool } from "./originalWarriorPool.js";
+import { originalElitePool } from "./originalElitePool.js";
+
 export const state = {
   gold:700,
   food: 100,

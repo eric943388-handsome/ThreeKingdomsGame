@@ -1,5 +1,5 @@
 // ui.js
-import { state } from "./state.js";
+import { state, resetGame } from "./state.js";
 
 export function updateUI(msg = "") {
   // ===== 玩家狀態 =====
@@ -76,9 +76,11 @@ export function updateUI(msg = "") {
   }
 
   // ===== 原本遊戲結束邏輯 =====
-  let countdown = RESET_COUNTDOWN;
+  
   // ===== 遊戲結束倒數秒數 =====
   const RESET_COUNTDOWN = 3;
+
+  let countdown = RESET_COUNTDOWN;
 
   modalCountdown.innerText = `遊戲將在 ${countdown} 秒後重置`;
 
