@@ -33,10 +33,10 @@ function generateEnemyStats(territory = 0) {
   let atkMin, atkMax, defMin, defMax;
 
   if (territory < 10) { atkMin = 15; atkMax = 35; defMin = 15; defMax = 35; }
-  else if (territory < 20) { atkMin = 35; atkMax = 60; defMin = 35; defMax = 60; }
-  else if (territory < 30) { atkMin = 40; atkMax = 80; defMin = 40; defMax = 80; }
+  else if (territory < 20) { atkMin = 45; atkMax = 70; defMin = 45; defMax = 70; }
+  else if (territory < 30) { atkMin = 60; atkMax = 90; defMin = 60; defMax = 90; }
   else if (territory < 40) {
-    if (Math.random() < 0.5) { atkMin = 50; atkMax = 140; defMin = 20; defMax = 40; }
+    if (Math.random() < 0.5) { atkMin = 50; atkMax = 140; defMin = 20; defMax = 50; }
     else { atkMin = 20; atkMax = 50; defMin = 50; defMax = 140; }
   }
   else if (territory < 49) { atkMin = 100; atkMax = 200; defMin = 100; defMax = 200; }
