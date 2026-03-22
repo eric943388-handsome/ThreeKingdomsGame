@@ -2,7 +2,7 @@ export const state = {
   gold:700,
   food: 100,
   stone: 100,
-  attack: 2000,
+  attack: 20,
   defense: 10,
   territory: 5,
   generals: [],
