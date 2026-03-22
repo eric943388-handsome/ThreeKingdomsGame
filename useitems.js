@@ -1,3 +1,5 @@
+//廢了
+
 import { state } from "./state.js";
 import { updateUI } from "./ui.js"; 
 

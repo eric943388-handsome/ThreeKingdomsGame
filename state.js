@@ -26,6 +26,13 @@ export function resetGame() {
   state.loyaltyPacks = 0;
   state.expPacks = 0;
   state.currentEnemy = null;
-  state.activeGeneral= null;
-  state.eliteScrolls = 0;   // 新增高級武將卷
+  state.activeGeneral = null;
+  state.eliteScrolls = 0;
+
+  // ⭐⭐ 重置卡池 ⭐⭐
+  warriorPool.length = 0;
+  warriorPool.push(...originalWarriorPool.map(g => ({ ...g })));
+
+  eliteWarriorPool.length = 0;
+  eliteWarriorPool.push(...originalElitePool.map(g => ({ ...g })));
 }

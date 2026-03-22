@@ -4,7 +4,7 @@ import { findEnemy, attackEnemy } from "./war.js";
 import { updateUI } from "./ui.js";
 import { state } from "./state.js";
 import { itemPool } from "./itemPool.js";
-import { sellGeneral } from "./general.js";
+import { sellGeneral, setActiveGeneral } from "./general.js";
 import { buyFood, buyStone, buyHpPack, buyLoyaltyPack, buyExpPack } from "./store.js";
 import { developAtk, developDef } from "./develop.js";
 import { useEliteScroll } from "./eliteRecruit.js";
@@ -13,12 +13,13 @@ import { sellItem } from "./itemActions.js";
 document.addEventListener("DOMContentLoaded", () => {
 
   // ===============================
-  // 分頁切換
+  // 分頁切換（修正版）
   // ===============================
   const pages = document.querySelectorAll(".page");
+
   document.querySelectorAll(".tab-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
-      pages.forEach((p) => (p.style.display = "none"));
+      pages.forEach(p => p.style.display = "none");
       document.getElementById(btn.dataset.target).style.display = "flex";
     });
   });
@@ -31,9 +32,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ===============================
-  // 武將按鈕事件代理
+  // 武將操作（🔥完全統一）
   // ===============================
   const generalsList = document.getElementById("generalsList");
+
+  const itemMap = {
+    "btn-hp": "補包",
+    "btn-loyalty": "封侯令",
+    "btn-exp": "經驗禮包"
+  };
 
   generalsList.addEventListener("click", (e) => {
     const btn = e.target.closest("button");
@@ -44,29 +51,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let msg = "";
 
-    // ===== 道具使用（已統一）=====
-    if (btn.classList.contains("btn-hp")) {
-      msg = itemPool.find(i => i.name === "補包").apply(index);
-
-    } else if (btn.classList.contains("btn-loyalty")) {
-      msg = itemPool.find(i => i.name === "封侯令").apply(index);
-
-    } else if (btn.classList.contains("btn-exp")) {
-      msg = itemPool.find(i => i.name === "經驗禮包").apply(index);
+    // ===== 道具使用（統一 itemPool）=====
+    for (const cls in itemMap) {
+      if (btn.classList.contains(cls)) {
+        const item = itemPool.find(i => i.name === itemMap[cls]);
+        msg = item.apply(index);
+        updateUI(msg);
+        return;
+      }
     }
 
     // ===== 出戰 / 取消 =====
-    else if (btn.classList.contains("btn-active")) {
-      const g = state.generals[index];
-      if (!g) return;
-
-      if (state.activeGeneral === g) {
-        state.activeGeneral = null;
-        msg = `${g.name} 已取消出戰`;
-      } else {
-        state.activeGeneral = g;
-        msg = `${g.name} 出戰中`;
-      }
+    if (btn.classList.contains("btn-active")) {
+      msg = setActiveGeneral(index);
     }
 
     // ===== 出售武將 =====
@@ -78,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ===============================
-  // 上方道具出售（新功能🔥）
+  // 上方道具出售
   // ===============================
   const topItems = document.getElementById("topItems");
   if (topItems) {

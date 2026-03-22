@@ -76,17 +76,35 @@ function generateEnemyStats(territory = 0) {
 function applyGeneralSkills(general, baseAtk, baseDef) {
   let atk = baseAtk;
   let def = baseDef;
+  let logs = [];
 
   if (general.skills && general.skills.length > 0) {
     general.skills.forEach(skill => {
       if (skill.type === "passive") {
-        if (skill.target === "atk") atk = Math.floor(atk * skill.multiplier);
-        if (skill.target === "def") def = Math.floor(def * skill.multiplier);
+
+        if (skill.target === "atk") {
+          const before = atk;
+          atk = Math.floor(atk * skill.multiplier);
+
+          logs.push(
+            `${general.name}施放【${skill.name}】攻擊從 ${before} 提升為 ${atk}`
+          );
+        }
+
+        if (skill.target === "def") {
+          const before = def;
+          def = Math.floor(def * skill.multiplier);
+
+          logs.push(
+            `${general.name}施放【${skill.name}】防禦從 ${before} 提升為 ${def}`
+          );
+        }
+
       }
     });
   }
 
-  return { atk, def };
+  return { atk, def, logs };
 }
 
 /**
@@ -124,22 +142,15 @@ export function attackEnemy() {
     playerAtk += g.atk;
 
     // 套用技能加成
-    const skillApplied = applyGeneralSkills(g, g.atk, g.atk); // 防禦未用
-    playerAtk += skillApplied.atk - g.atk; // 避免重複加 g.atk
+    const skillApplied = applyGeneralSkills(g, playerAtk, playerDef);
 
-    // 顯示技能訊息
-    if (g.skills && g.skills.length > 0) {
-      g.skills.forEach(skill => {
-        if (skill.type === "passive") {
-          if (skill.target === "atk") {
-            msg += `\n${g.name} 技能觸發！攻擊力 x${skill.multiplier} → ${playerAtk}`;
-          }
-          if (skill.target === "def") {
-            msg += `\n${g.name} 技能觸發！防禦力 x${playerDef}`;
-          }
-        }
-      });
-    }
+    playerAtk = skillApplied.atk;
+    playerDef = skillApplied.def;
+
+    // ⭐ 加入技能文字
+    skillApplied.logs.forEach(log => {
+      msg += `\n${log}`;
+    });
   }
 
   // ===== 勝負判定 =====
