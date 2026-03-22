@@ -55,3 +55,43 @@ export function updateUI(msg = "") {
     ? `⚔️${state.currentEnemy.atk} 🛡${state.currentEnemy.def}`
     : "";
 }
+
+// ===== 顯示遊戲結束視窗 =====
+  export function showGameOverModal(message, isGameOver = true) {
+  const modal = document.getElementById("gameOverModal");
+  const modalMsg = document.getElementById("modalMessage");
+  const modalCountdown = document.getElementById("modalCountdown");
+
+  modal.style.display = "flex";
+  modalMsg.innerText = message;
+
+  // ⭐ 朝貢不用倒數
+  if (!isGameOver) {
+    modalCountdown.innerText = "點擊任意處關閉";
+    modal.onclick = () => {
+      modal.style.display = "none";
+      modal.onclick = null;
+    };
+    return;
+  }
+
+  // ===== 原本遊戲結束邏輯 =====
+  let countdown = RESET_COUNTDOWN;
+  // ===== 遊戲結束倒數秒數 =====
+  const RESET_COUNTDOWN = 3;
+
+  modalCountdown.innerText = `遊戲將在 ${countdown} 秒後重置`;
+
+  const interval = setInterval(() => {
+    countdown--;
+    modalCountdown.innerText = `遊戲將在 ${countdown} 秒後重置`;
+
+    if (countdown < 0) {
+      clearInterval(interval);
+      modal.style.display = "none";
+      resetGame();
+      document.getElementById("developPage").style.display = "flex";
+      updateUI("遊戲已重置，開始新的征程！");
+    }
+  }, 1000);
+}

@@ -2,7 +2,7 @@ export const state = {
   gold:700,
   food: 100,
   stone: 100,
-  attack: 20,
+  attack: 2000,
   defense: 10,
   territory: 5,
   generals: [],
@@ -11,7 +11,8 @@ export const state = {
   expPacks: 0,
   currentEnemy: null,
   activeGeneral: null,
-    eliteScrolls: 0, // 新增高級武將卷
+  eliteScrolls: 0, // 新增高級武將卷
+  claimedTributes: new Set(),
 };
 
 export function resetGame() {
@@ -28,6 +29,7 @@ export function resetGame() {
   state.currentEnemy = null;
   state.activeGeneral = null;
   state.eliteScrolls = 0;
+  state.claimedTributes = new Set();
 
   // ⭐⭐ 重置卡池 ⭐⭐
   warriorPool.length = 0;

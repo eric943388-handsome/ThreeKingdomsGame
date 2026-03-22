@@ -3,6 +3,8 @@ import { weightedRandom, randInt } from "./utils.js";
 import { updateUI } from "./ui.js";
 import { getRandomItem } from "./itemPool.js";
 import { returnGeneralToPool } from "./generalPoolManager.js";
+import { handleTribute } from "./tribute.js";
+import { showGameOverModal } from "./ui.js";
 
 // ===== 掉落設定 =====
 const dropRates = {
@@ -10,8 +12,7 @@ const dropRates = {
   lose: 0.3
 };
 
-// ===== 遊戲結束倒數秒數 =====
-const RESET_COUNTDOWN = 3;
+
 
 /**
  * 計算武將叛逃機率
@@ -24,32 +25,6 @@ function calculateEscapeChance(loyalty) {
   return Math.pow(normalized, 4);
 }
 
-/**
- * 顯示遊戲結束 Modal
- */
-function showGameOverModal(message) {
-  const modal = document.getElementById("gameOverModal");
-  const modalMsg = document.getElementById("modalMessage");
-  const modalCountdown = document.getElementById("modalCountdown");
-
-  modal.style.display = "flex";
-  modalMsg.innerText = message;
-
-  let countdown = RESET_COUNTDOWN;
-  modalCountdown.innerText = `遊戲將在 ${countdown} 秒後重置`;
-
-  const interval = setInterval(() => {
-    countdown--;
-    modalCountdown.innerText = `遊戲將在 ${countdown} 秒後重置`;
-    if (countdown < 0) {
-      clearInterval(interval);
-      modal.style.display = "none";
-      resetGame();
-      document.getElementById("developPage").style.display = "flex";
-      updateUI("遊戲已重置，開始新的征程！");
-    }
-  }, 1000);
-}
 
 /**
  * 生成敵人數值
@@ -212,6 +187,18 @@ export function attackEnemy() {
 
   // ===== 領土變化 =====
   state.territory += win ? 1 : -1;
+
+// ===============================
+// 朝貢（只負責呼叫）
+// ===============================
+const tributeMsg = handleTribute();
+
+if (tributeMsg) {
+  msg += "\n" + tributeMsg;
+
+  // ⭐ 朝貢用「非遊戲結束模式」
+  showGameOverModal(tributeMsg, false);
+}
 
   // 遊戲結束檢查
   if (state.territory <= 0) showGameOverModal("💀 領土歸零，遊戲結束！");
