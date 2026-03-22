@@ -17,6 +17,11 @@ export function updateUI(msg = "") {
   const generalsList = document.getElementById("generalsList");
   generalsList.innerHTML = "";
 
+  // ===== 出售道具 =====
+  document.getElementById("hpCount").innerText = state.hpPacks;
+  document.getElementById("loyaltyCount").innerText = state.loyaltyPacks;
+  document.getElementById("expCount").innerText = state.expPacks;
+  // ===== 武將欄 =====
   state.generals.forEach((g, index) => {
     const div = document.createElement("div");
     div.className = "general-card";

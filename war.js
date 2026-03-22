@@ -2,6 +2,7 @@ import { state, resetGame } from "./state.js";
 import { weightedRandom, randInt } from "./utils.js";
 import { updateUI } from "./ui.js";
 import { getRandomItem } from "./itemPool.js";
+import { returnGeneralToPool } from "./generalPoolManager.js";
 
 // ===== 掉落設定 =====
 const dropRates = {
@@ -163,19 +164,28 @@ export function attackEnemy() {
 
     if (g.hp <= 0) {
       msg += `\n${g.name} 戰死`;
+
+      // ⭐ 放回武將池
+      returnGeneralToPool(g);
+
       state.generals = state.generals.filter(x => x !== g);
       state.activeGeneral = null;
-    } else {
+    }
+    else {
       g.loyalty -= 5;
       msg += `\n${g.name} 忠誠下降 5`;
 
-      if (Math.random() < calculateEscapeChance(g.loyalty)) {
-        msg += `\n${g.name} 忠誠低，你這昏君，叛逃!!`;
-        state.generals = state.generals.filter(x => x !== g);
-        state.activeGeneral = null;
-        state.attack = Math.floor(state.attack * 0.75);
-        state.defense = Math.floor(state.defense * 0.75);
-      }
+    if (Math.random() < calculateEscapeChance(g.loyalty)) {
+      msg += `\n${g.name} 忠誠低，你這昏君，叛逃!!`;
+
+      // ⭐ 放回武將池
+      returnGeneralToPool(g);
+
+      state.generals = state.generals.filter(x => x !== g);
+      state.activeGeneral = null;
+      state.attack = Math.floor(state.attack * 0.75);
+      state.defense = Math.floor(state.defense * 0.75);
+    }
     }
   }
 
@@ -200,3 +210,4 @@ export function attackEnemy() {
 
   return msg;
 }
+

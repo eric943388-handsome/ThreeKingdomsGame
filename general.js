@@ -1,5 +1,6 @@
 import { state } from "./state.js";
 import { itemPool } from "./itemPool.js";
+import { returnGeneralToPool } from "./generalPoolManager.js";
 
 export function useHpPack(index) {
   if (!state.generals[index]) return "武將不存在！";
@@ -35,12 +36,15 @@ export function setActiveGeneral(index) {
   state.activeGeneral = g;
   return { msg: `${g.name} 設為出征`, index, active: true };
 }
-
 export function sellGeneral(index) {
   const g = state.generals[index];
   if (!g) return "武將不存在！";
 
   state.gold += 200;
+
+  // ⭐ 放回池
+  returnGeneralToPool(g);
+
   if (state.activeGeneral === g) state.activeGeneral = null;
   state.generals.splice(index, 1);
 

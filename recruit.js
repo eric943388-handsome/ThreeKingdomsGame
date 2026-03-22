@@ -18,8 +18,17 @@ export function recruit() {
   // 30% 機率抽到武將
   if (Math.random() < 0.3 && warriorPool.length > 0) {
     const g = weightedRandom(warriorPool);
-    // 從武將池移除
+
+    // ⭐ 一定要有這行（防止重複）
     warriorPool.splice(warriorPool.indexOf(g), 1);
+
+    state.generals.push({
+      name: g.name,
+      atk: g.atk,
+      hp: g.hp,
+      maxHp: g.maxHp,
+      loyalty: g.loyalty
+    });
 
     // 加入玩家武將列表
     state.generals.push({
