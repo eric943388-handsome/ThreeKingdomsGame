@@ -152,7 +152,7 @@ if (state.activeGeneral) {
   // ===== 武將血量 & 忠誠損耗 =====
   if (state.activeGeneral) {
     const g = state.activeGeneral;
-    const damage = Math.max(0,Math.floor(enemy.atk / 4) - Math.floor(playerDef / 5));
+    const damage = Math.max(0,Math.floor(enemy.atk / 2) - Math.floor(playerDef / 4));
     g.hp -= damage;
     msg += `\n${g.name} 受到 ${damage} 傷害`;
 
