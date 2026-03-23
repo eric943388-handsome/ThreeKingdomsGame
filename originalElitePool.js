@@ -26,9 +26,9 @@ export const originalElitePool = [
       {
         id: "charm",
         name: "沉魚落雁",
-        desc: "提升防禦力 10%",
+        desc: "提升防禦力 50%",
         type: "passive",
-        effect: { target: "def", multiply: 1.1 }
+        effect: { target: "def", multiply: 1.5 }
       }
     ]
   },
