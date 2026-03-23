@@ -133,23 +133,23 @@ export function showIntro() {
 // 🪟 武將 Modal
 // ===============================
 export function showGeneralModal(general) {
+  if (!general) return console.warn("沒有武將資料");
+
   const modal = document.getElementById("generalModal");
+  if (!modal) return console.warn("找不到 generalModal");
 
+  // 更新武將資訊
   document.getElementById("gmName").innerText = general.name;
-
   document.getElementById("gmLevel").innerText =
     `Lv.${general.level ?? 1} EXP ${general.exp ?? 0}/${general.expToNext ?? 100}`;
-
   document.getElementById("gmStats").innerText =
     `HP: ${general.hp ?? 0}/${general.maxHp ?? 0}
 ATK: ${general.atk ?? 0}
 DEF: ${general.def ?? 0}`;
-
   document.getElementById("gmUpgrade").innerText =
     `升級次數：${general.upgrades?.times || 0}`;
 
   const skillBox = document.getElementById("gmSkills");
-
   if (!general.skills || general.skills.length === 0) {
     skillBox.innerText = "無技能";
   } else {
@@ -160,42 +160,12 @@ DEF: ${general.def ?? 0}`;
         .join("<br>");
   }
 
+  // 顯示 modal
   modal.style.display = "flex";
-}
-
-// ===============================
-// init modal
-// ===============================
-// ui.js
-export function initGeneralModal(general) {
-  if (!general) return console.warn("沒有武將資料");
-
-  console.log("開啟武將卡:", general);
-
-  const modal = document.getElementById("generalModal");
-  if (!modal) return console.warn("找不到 generalModal");
-
-  modal.style.display = "flex"; // 顯示 modal
-
-  // 更新內容
-  document.getElementById("gmName").textContent = general.name;
-  document.getElementById("gmLevel").textContent =
-    `Lv.${general.level ?? 1} EXP ${general.exp ?? 0}/${general.expToNext ?? 100}`;
-  document.getElementById("gmStats").textContent =
-    `HP: ${general.hp ?? 0}/${general.maxHp ?? 0}\nATK: ${general.atk ?? 0}\nDEF: ${general.def ?? 0}`;
-  document.getElementById("gmUpgrade").textContent =
-    `升級次數：${general.upgrades?.times ?? 0}`;
-
-  const skillBox = document.getElementById("gmSkills");
-  if (!general.skills || general.skills.length === 0) {
-    skillBox.textContent = "無技能";
-  } else {
-    skillBox.innerHTML =
-      "<b>技能：</b><br>" + general.skills.map(s => `⚔️ ${s.name}`).join("<br>");
-  }
 
   // 關閉按鈕
   document.getElementById("closeGeneralModal").onclick = () => {
     modal.style.display = "none";
   };
 }
+

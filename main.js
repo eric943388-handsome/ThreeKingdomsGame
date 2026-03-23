@@ -3,7 +3,7 @@
 // ===============================
 import { recruit } from "./recruit.js";
 import { findEnemy, attackEnemy } from "./war.js";
-import { updateUI, showIntro, initGeneralModal } from "./ui.js";
+import { updateUI, showIntro, showGeneralModal } from "./ui.js";
 import { state } from "./state.js";
 import { itemPool } from "./itemPool.js";
 import { sellGeneral, setActiveGeneral } from "./general.js";
@@ -196,7 +196,7 @@ function initGenerals() {
       msg = `開啟武將卡: ${g.name}`;
       console.log(msg);
 
-      initGeneralModal(g); // ✅ 傳物件
+      showGeneralModal(g); // ✅ 傳物件
     }
 
     updateUI(msg);

@@ -29,7 +29,8 @@ export function recruit() {
       hp: g.hp,
       maxHp: g.maxHp,
       loyalty: g.loyalty,
-      upgrades: { times: 0 }
+      upgrades: { times: 0 },
+      quality: "black"
     });
 
     msg = `🎉 抽到武將：${g.name} (血量 ${g.hp}/${g.maxHp})`;

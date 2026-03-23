@@ -100,35 +100,85 @@ export const itemPool = [
   // =========================
   // 📦 經驗禮包
   // =========================
-  {
-    name: "經驗禮包",
-    weight: 3,
+ {
+  name: "經驗禮包",
+  weight: 3,
 
-    apply: (generalIndex = null, count = 1) => {
+apply: (generalIndex = null, count = 1) => {
+  if (generalIndex === null) {
+    state.expPacks++;
+    return "經驗禮包 +1";
+  }
 
-      if (generalIndex !== null) {
-        const g = state.generals[generalIndex];
-        if (!g) return "武將不存在！";
+  const g = state.generals[generalIndex];
+  if (!g) return "武將不存在！";
 
-        const useCount = Math.min(count, state.expPacks);
+  g.upgrades = g.upgrades || { times: 0 };
+  const isElite = g.skills && g.skills.length > 0;
 
-        if (useCount <= 0) return "沒有經驗禮包！";
+  let totalUpgrades = 0;
+  let totalUsedPacks = 0;
 
-        state.expPacks -= useCount;
+  // 👉 玩家實際可用數量
+  let available = Math.min(count, state.expPacks);
 
-        g.atk += 10 * useCount;
-        g.maxHp += 10 * useCount;
-        g.hp = Math.min(g.hp + 10 * useCount, g.maxHp);
-        g.upgrades.times += useCount;
-
-        return `${g.name} 使用 ${useCount} 個經驗禮包｜攻擊+${10 * useCount} / 血量+${10 * useCount}`;
-      }
-
-      state.expPacks++;
-      return "經驗禮包 +1";
+  // 👉 計算下一次升級需要多少（抽出函式比較乾淨）
+  const getNeeded = () => {
+    if (isElite) {
+      if (g.upgrades.times >= 10) return 4;
+      if (g.upgrades.times >= 5) return 3;
+      return 2;
+    } else {
+      if (g.upgrades.times >= 10) return 3;
+      if (g.upgrades.times >= 5) return 2;
+      return 1;
     }
-  },
+  };
 
+  let needed = getNeeded();
+
+  // =========================
+  // 🔁 核心迴圈（用「包數」控制）
+  // =========================
+  while (available >= needed) {
+
+    // 扣除
+    available -= needed;
+    state.expPacks -= needed;
+    totalUsedPacks += needed;
+
+    // 升級
+    g.atk += 10;
+    g.maxHp += 10;
+    g.hp = Math.min(g.hp + 10, g.maxHp);
+    g.upgrades.times += 1;
+    totalUpgrades++;
+
+    // 更新下一次需求
+    needed = getNeeded();
+  }
+
+  // =========================
+  // 🧾 訊息輸出
+  // =========================
+  if (totalUpgrades === 0) {
+    return `經驗禮包不足！升級需要 ${needed} 個`;
+  }
+
+  let msg =
+    `${g.name} 升級 ${totalUpgrades} 次｜` +
+    `消耗 ${totalUsedPacks} 個經驗禮包｜` +
+    `攻擊+${10 * totalUpgrades} / 血量+${10 * totalUpgrades}｜` +
+    `升級次數 ${g.upgrades.times}`;
+
+  // 👉 有剩但不夠再升
+  if (available > 0 && available < needed) {
+    msg += `\n剩餘 ${available} 個，還需要 ${needed} 個才能再升級`;
+  }
+
+  return msg;
+}
+  },
   // =========================
   // 💰 金幣
   // =========================
