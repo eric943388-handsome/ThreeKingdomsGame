@@ -32,14 +32,14 @@ function calculateEscapeChance(loyalty) {
 function generateEnemyStats(territory = 0) {
   let atkMin, atkMax, defMin, defMax;
 
-  if (territory < 10) { atkMin = 15; atkMax = 35; defMin = 15; defMax = 35; }
-  else if (territory < 20) { atkMin = 45; atkMax = 70; defMin = 45; defMax = 70; }
-  else if (territory < 30) { atkMin = 60; atkMax = 90; defMin = 60; defMax = 90; }
+  if (territory < 10) { atkMin = 25; atkMax = 45; defMin = 25; defMax = 45; }
+  else if (territory < 20) { atkMin = 55; atkMax = 80; defMin = 55; defMax = 80; }
+  else if (territory < 30) { atkMin = 70; atkMax = 100; defMin = 70; defMax = 100; }
   else if (territory < 40) {
-    if (Math.random() < 0.5) { atkMin = 50; atkMax = 140; defMin = 20; defMax = 50; }
-    else { atkMin = 20; atkMax = 50; defMin = 50; defMax = 140; }
+    if (Math.random() < 0.5) { atkMin = 80; atkMax = 160; defMin = 20; defMax = 50; }
+    else { atkMin = 20; atkMax = 50; defMin = 80; defMax = 160; }
   }
-  else if (territory < 49) { atkMin = 100; atkMax = 200; defMin = 100; defMax = 200; }
+  else if (territory < 49) { atkMin = 150; atkMax = 250; defMin = 150; defMax = 250; }
   else { atkMin = 250; atkMax = 350; defMin = 250; defMax = 350; }
 
   return { atk: randInt(atkMin, atkMax), def: randInt(defMin, defMax) };
