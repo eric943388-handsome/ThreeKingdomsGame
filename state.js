@@ -11,12 +11,12 @@ export const state = {
   defense: 10,
   territory: 5,
   generals: [],
-  hpPacks: 100,
-  loyaltyPacks: 100,
-  expPacks: 100,
+  hpPacks: 0,
+  loyaltyPacks: 0,
+  expPacks: 0,
   currentEnemy: null,
   activeGeneral: null,
-  eliteScrolls: 1000, // 新增高級武將卷
+  eliteScrolls: 0, // 新增高級武將卷
   claimedTributes: new Set(),
   selectedItem: "hp",// 預設選擇補包
   selectedCount: 1,// 預設選擇數量

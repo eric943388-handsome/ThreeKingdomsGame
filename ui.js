@@ -20,6 +20,17 @@ export function updateUI(msg = "") {
   document.getElementById("expCount").innerText = state.expPacks;
 
   renderGenerals();
+ const enemyEl = document.getElementById("enemy");
+
+if (enemyEl) {
+  if (state.currentEnemy) {
+    enemyEl.innerText =
+      `👹 敵人\n⚔️ 攻擊: ${state.currentEnemy.atk}\n🛡 防禦: ${state.currentEnemy.def}`;
+  } else {
+    enemyEl.innerText = "（目前沒有敵人）";
+  }
+}
+  
 }
 
 // ===============================
