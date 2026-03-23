@@ -11,13 +11,17 @@ export const state = {
   defense: 10,
   territory: 5,
   generals: [],
-  hpPacks: 0,
-  loyaltyPacks: 0,
-  expPacks: 0,
+  hpPacks: 100,
+  loyaltyPacks: 100,
+  expPacks: 100,
   currentEnemy: null,
   activeGeneral: null,
-  eliteScrolls: 0, // 新增高級武將卷
+  eliteScrolls: 1000, // 新增高級武將卷
   claimedTributes: new Set(),
+  selectedItem: "hp",// 預設選擇補包
+  selectedCount: 1,// 預設選擇數量
+  actionMode: false,
+
 };
 
 export function resetGame() {
@@ -35,6 +39,9 @@ export function resetGame() {
   state.activeGeneral = null;
   state.eliteScrolls = 0;
   state.claimedTributes = new Set();
+  state.selectedItem = "hp";// 預設選擇補包
+  state.selectedCount = 1;// 預設選擇數量
+  state.actionMode = false;
 
   // ⭐⭐ 重置卡池 ⭐⭐
   warriorPool.length = 0;

@@ -56,25 +56,20 @@ function applyGeneralSkills(general, baseAtk, baseDef) {
   if (general.skills && general.skills.length > 0) {
     general.skills.forEach(skill => {
       if (skill.type === "passive") {
+        const target = skill.effect.target;
+        const multiplier = skill.effect.multiply;
 
-        if (skill.target === "atk") {
+        if (target === "atk") {
           const before = atk;
-          atk = Math.floor(atk * skill.multiplier);
-
-          logs.push(
-            `${general.name}施放【${skill.name}】攻擊從 ${before} 提升為 ${atk}`
-          );
+          atk = Math.floor(atk * multiplier);
+          logs.push(`${general.name}施放【${skill.name}】攻擊從 ${before} 提升為 ${atk}`);
         }
 
-        if (skill.target === "def") {
+        if (target === "def") {
           const before = def;
-          def = Math.floor(def * skill.multiplier);
-
-          logs.push(
-            `${general.name}施放【${skill.name}】防禦從 ${before} 提升為 ${def}`
-          );
+          def = Math.floor(def * multiplier);
+          logs.push(`${general.name}施放【${skill.name}】防禦從 ${before} 提升為 ${def}`);
         }
-
       }
     });
   }
@@ -109,24 +104,37 @@ export function attackEnemy() {
   // ===== 玩家總攻擊力 / 防禦力 =====
   let playerAtk = state.attack;
   let playerDef = state.defense;
+    console.log("技能計算前：", { atk: playerAtk, def: playerDef });
+if (state.activeGeneral) {
+  const g = state.activeGeneral;
 
-  if (state.activeGeneral) {
-    const g = state.activeGeneral;
+  // 武將攻擊加入玩家自身攻擊
+  playerAtk += g.atk;
 
-    // 武將攻擊加入玩家自身攻擊
-    playerAtk += g.atk;
+  // 套用技能加成
+  const skillApplied = applyGeneralSkills(g, playerAtk, playerDef);
 
-    // 套用技能加成
-    const skillApplied = applyGeneralSkills(g, playerAtk, playerDef);
+  console.log("=== 技能計算前 ===");
+  console.log("玩家原始 atk/def:", { atk: playerAtk - g.atk, def: playerDef });
+  console.log("activeGeneral:", g);
 
-    playerAtk = skillApplied.atk;
-    playerDef = skillApplied.def;
+  playerAtk = skillApplied.atk;
+  playerDef = skillApplied.def;
 
-    // ⭐ 加入技能文字
-    skillApplied.logs.forEach(log => {
+  console.log("=== 技能加成回傳 ===");
+  console.log(skillApplied);
+
+  if (skillApplied.logs.length === 0) {
+    console.warn("⚠️ 技能 logs 是空的！可能 general.skills 名稱或 target 有問題");
+  } else {
+    console.log("技能 logs 列表:");
+    skillApplied.logs.forEach((log, i) => {
+      console.log(`log[${i}] ->`, log);
       msg += `\n${log}`;
+      console.log("加入 msg 後:", msg);
     });
   }
+}
 
   // ===== 勝負判定 =====
   const win = playerAtk >= enemy.def;

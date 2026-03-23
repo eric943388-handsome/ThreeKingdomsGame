@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>三國養成遊戲</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>三國養成遊戲</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- 遊戲標題 -->
   <h1>⚔️ 我的三國 ⚔️</h1>
 
-  <!-- 玩家狀態 -->
+  <!-- 玩家狀態區域 -->
   <div id="stats"></div>
   <p id="log"></p>
 
-  <!--出售道具-->
-    <div id="topItems">
-  🧪 補包: <span id="hpCount">0</span>
-  <button data-sell="hp">出售</button>
+  <!-- 🧪 出售道具區域 -->
+  <div id="topItems">
+    🧪 補包: <span id="hpCount">0</span>
+    <button data-sell="hp">出售</button>
 
-  🎖 封侯令: <span id="loyaltyCount">0</span>
-  <button data-sell="loyalty">出售</button>
+    🎖 封侯令: <span id="loyaltyCount">0</span>
+    <button data-sell="loyalty">出售</button>
 
-  📦 經驗包: <span id="expCount">0</span>
-  <button data-sell="exp">出售</button>
-</div>
-  
-  
-  <!-- 頁籤 -->
+    📦 經驗包: <span id="expCount">0</span>
+    <button data-sell="exp">出售</button>
+  </div>
+
+  <!-- =============================== -->
+  <!-- 頁籤區，選擇不同遊戲頁面 -->
+  <!-- =============================== -->
   <div id="navbar">
     <button class="tab-btn" data-target="developPage">發展</button>
     <button class="tab-btn" data-target="recruitPage">招募</button>
@@ -35,9 +37,12 @@
     <button class="tab-btn" data-target="storePage">商店</button>
   </div>
 
+  <!-- =============================== -->
   <!-- 各頁面區塊 -->
+  <!-- =============================== -->
   <div id="pages">
-    <!-- 發展 -->
+    
+    <!-- 發展頁面 -->
     <div id="developPage" class="page">
       <div class="page-content">
         <button id="btnDevelopAtk">發展兵力</button>
@@ -45,16 +50,16 @@
       </div>
     </div>
 
-    <!-- 招募 -->
+    <!-- 招募頁面 -->
     <div id="recruitPage" class="page">
       <div class="page-content">
         <button id="btnRecruit">普通招募（錢）</button>
-      <button id="btnEliteRecruit">💎高級招募（卷）</button>
+        <button id="btnEliteRecruit">💎 高級招募（卷）</button>
         <p id="eliteScrollCount">高級武將卷: 0</p> <!-- 顯示卷數 -->
       </div>
     </div>
 
-    <!-- 攻打 -->
+    <!-- 攻打頁面 -->
     <div id="warPage" class="page">
       <div class="page-content">
         <button id="btnFind">找敵人</button>
@@ -63,45 +68,100 @@
       </div>
     </div>
 
-    <!-- 武將 -->
-    <div id="generalsPage" class="page">
-      <div class="page-content">
-        <div id="items"></div>
-        <div id="generalsList"></div>
+  <!-- =========================
+     🧭 武將頁面
+========================= -->
+<div id="generalsPage" class="page">
+  <div class="page-content">
+
+    <!-- 🟢 操作列（Action Mode 控制） -->
+    <div class="toolbar">
+
+      <!-- 開啟道具模式 -->
+      <button id="btnUseItemMode">使用道具</button>
+
+      <!-- 🧠 Action Bar -->
+      <div id="actionBar" style="display:none;">
+        <div class="action-row">
+
+          <!-- 道具選擇 -->
+          <select id="itemSelect">
+            <option value="hp">補包</option>
+            <option value="loyalty">封侯令</option>
+            <option value="exp">經驗禮包</option>
+          </select>
+
+          <!-- 使用數量 -->
+          <input id="itemCount" type="number" min="1" value="1" />
+
+          <!-- 提示 -->
+          <span id="actionHint">點擊武將使用</span>
+
+          <!-- 取消 -->
+          <button id="closeActionBar">取消</button>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- =========================
+         🧑 武將列表
+    ========================== -->
+    <div id="generalsList"></div>
+
+    <!-- =========================
+         📜 武將詳細視窗
+    ========================== -->
+    <div id="generalModal" class="modal">
+      <div class="modal-box">
+
+        <h3 id="gmName"></h3>
+
+        <p id="gmLevel"></p>
+        <p id="gmExp"></p>
+
+        <hr>
+
+        <p id="gmStats"></p>
+
+        <hr>
+
+        <div id="gmSkills"></div>
+
+        <hr>
+
+        <p id="gmUpgrade"></p>
+
+        <button id="closeGeneralModal">關閉</button>
+
       </div>
     </div>
 
-
-<!-- 商店 -->
-<div id="storePage" class="page">
-  <div class="page-content">
-    <button id="btnBuyFood">購買糧食（+50）💰30</button>
-    <button id="btnBuyStone">購買石頭（+50）💰50</button>
-    <button id="btnBuyHpPack">購買補包 💰50</button>
-    <button id="btnBuyLoyaltyPack">購買封侯令 💰80</button>
-    <button id="btnBuyExpPack">購買經驗禮包 💰100</button>
   </div>
 </div>
 
+    <!-- 商店頁面 -->
+    <div id="storePage" class="page">
+      <div class="page-content">
+        <button id="btnBuyFood">購買糧食（+50）💰30</button>
+        <button id="btnBuyStone">購買石頭（+50）💰50</button>
+        <button id="btnBuyHpPack">購買補包 💰50</button>
+        <button id="btnBuyLoyaltyPack">購買封侯令 💰80</button>
+        <button id="btnBuyExpPack">購買經驗禮包 💰100</button>
+      </div>
+    </div>
+
+  </div> <!-- end of pages -->
+
+  <!-- =============================== -->
   <!-- 勝敗提示彈窗 -->
-  <div id="gameOverModal" style="
-      display:none;
-      position:fixed;
-      top:0; left:0; right:0; bottom:0;
-      background: rgba(0,0,0,0.5);
-      justify-content:center;
-      align-items:center;
-      z-index:9999;
-  ">
-    <div style="
-        background:#0e0e0e; 
-        padding:20px; 
-        border-radius:10px; 
-        text-align:center;
-        min-width:250px;
-    ">
+  <!-- =============================== -->
+  <div id="gameOverModal" class="modal">
+    <div class="modal-box">
       <p id="modalMessage"></p>
       <p id="modalCountdown"></p>
+      <button id="modalBtn" style="display:none;">開始遊戲</button>
     </div>
   </div>
 

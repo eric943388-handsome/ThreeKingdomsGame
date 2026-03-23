@@ -1,40 +1,93 @@
-// originalEliteWarriorPool.js
 export const originalElitePool = [
-  { 
-    name: "呂布", atk: 50, hp: 120, maxHp: 120, loyalty: 80, 
+   {
+    id: "luBu", name: "呂布",
+    atk: 50, hp: 120, maxHp: 120, def: 20, loyalty: 80,
     weight: 1,
+    level: 1, exp: 0, expToNext: 120,
+    upgrades: { times: 0 },
     skills: [
-      { name: "狂暴", type: "passive", multiplier: 1.5, target: "atk" }
-    ] 
-  },
-  { 
-    name: "貂蟬", atk: 10, hp: 40, maxHp: 40, loyalty: 100, 
-    weight: 5,
-    skills: [
-      { name: "魅惑", type: "passive", multiplier: 1.1, target: "def" }
-    ] 
-  },
-  { 
-    name: "張遼", atk: 45, hp: 100, maxHp: 100, loyalty: 100, 
-    weight: 2,
-    skills: [
-      { name: "激勵", type: "passive", multiplier: 1.3, target: "def" }
-    ] 
-  },
-  { 
-    name: "典韋", atk: 45, hp: 110, maxHp: 110, loyalty: 85, 
-    weight: 2,
-    skills: [
-      { name: "左手的鋼鐵戟", type: "passive", multiplier: 1.15, target: "atk" },
-      { name: "右手的鐵盾", type: "passive", multiplier: 1.15, target: "def" }
+      {
+        id: "berserk",
+        name: "戰神之怒",
+        desc: "戰鬥中攻擊力提升 50%",
+        type: "passive",
+        effect: { target: "atk", multiply: 1.5 }
+      }
     ]
   },
-  { 
-    name: "黃忠", atk: 40, hp: 95, maxHp: 95, loyalty: 100, 
+
+  {
+    id: "diaoChan", name: "貂蟬",
+    atk: 10, hp: 40, maxHp: 40, def: 5, loyalty: 100,
     weight: 5,
+    level: 1, exp: 0, expToNext: 80,
+    upgrades: { times: 0 },
     skills: [
-      { name: "強弓", type: "passive", multiplier: 1.1, target: "atk" }
+      {
+        id: "charm",
+        name: "沉魚落雁",
+        desc: "提升防禦力 10%",
+        type: "passive",
+        effect: { target: "def", multiply: 1.1 }
+      }
     ]
   },
-  // 可以依需求繼續新增更多高級武將
+
+  {
+    id: "zhangLiao", name: "于禁",
+    atk: 45, hp: 100, maxHp: 100, def: 25, loyalty: 100,
+    weight: 2,
+    level: 1, exp: 0, expToNext: 110,
+    upgrades: { times: 0 },
+    skills: [
+      {
+        id: "inspire",
+        name: "堅守陣地",
+        desc: "提升全軍防禦力 30%",
+        type: "passive",
+        effect: { target: "def", multiply: 1.3 }
+      }
+    ]
+  },
+
+  {
+    id: "dianWei", name: "典韋",
+    atk: 45, hp: 110, maxHp: 110, def: 30, loyalty: 85,
+    weight: 2,
+    level: 1, exp: 0, expToNext: 130,
+    upgrades: { times: 0 },
+    skills: [
+      {
+        id: "axe",
+        name: "左手的鋼鐵戟",
+        desc: "攻擊力提升 15%",
+        type: "passive",
+        effect: { target: "atk", multiply: 1.15 }
+      },
+      {
+        id: "shield",
+        name: "右手的鐵盾",
+        desc: "防禦力提升 15%",
+        type: "passive",
+        effect: { target: "def", multiply: 1.15 }
+      }
+    ]
+  },
+
+  {
+    id: "huangZhong", name: "黃忠",
+    atk: 40, hp: 95, maxHp: 95, def: 15, loyalty: 100,
+    weight: 5,
+    level: 1, exp: 0, expToNext: 100,
+    upgrades: { times: 0 },
+    skills: [
+      {
+        id: "archer",
+        name: "強弓",
+        desc: "攻擊力提升 10%",
+        type: "passive",
+        effect: { target: "atk", multiply: 1.1 }
+      }
+    ]
+  }
 ];

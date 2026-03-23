@@ -1,3 +1,7 @@
+/* ================================
+   🎮 遊戲整體版面
+================================ */
+
 body {
   margin: 0;
   font-family: "微軟正黑體", sans-serif;
@@ -5,17 +9,22 @@ body {
   color: white;
   text-align: center;
   min-height: 100vh;
+
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* 標題 */
+/* ================================
+   🏷 標題
+================================ */
 h1 {
   margin: 20px 0;
 }
 
-/* 玩家狀態 & log */
+/* ================================
+   📊 玩家狀態區 + log
+================================ */
 #stats {
   background: #2c2c3e;
   padding: 15px;
@@ -30,12 +39,13 @@ h1 {
   color: gold;
 }
 
-/* 頁籤 */
+/* ================================
+   📑 頁籤列
+================================ */
 #navbar {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 0;
   padding: 10px 0;
 }
 
@@ -53,41 +63,57 @@ h1 {
   background: #4a4a7a;
 }
 
-/* 分頁區塊 - 滿版淺色背景 */
+/* ================================
+   📄 分頁主容器
+   - 預設隱藏
+   - 顯示時會佔滿畫面
+================================ */
 .page {
   display: none;
-  background: #2c2c45; /* 淺色版面 */
+
+  background: #2c2c45;
   width: 100%;
-  flex: 1; /* 撐滿頁籤以下高度 */
+  flex: 1;
+
   padding: 20px;
   box-sizing: border-box;
-  display: flex;
-  justify-content: center; /* 水平置中 */
-  align-items: flex-start; /* 上方開始排列 */
+
+  justify-content: center;
+  align-items: flex-start;
 }
 
-/* 內容框 */
+/* ================================
+   📦 分頁內容框
+================================ */
 .page-content {
   background: #3a3a5a;
   border-radius: 10px;
   padding: 30px 20px;
+
   display: flex;
   flex-direction: column;
   gap: 15px;
+
   min-width: 250px;
-  align-items: center; /* 框內按鈕置中 */
+  align-items: center;
 }
 
-/* 按鈕 */
+/* ================================
+   🔘 按鈕統一樣式
+================================ */
 button {
   padding: 12px 20px;
   font-size: 16px;
+
   border-radius: 10px;
   border: none;
+
   background: #5a5a7a;
   color: white;
+
   cursor: pointer;
   transition: 0.2s;
+
   min-width: 140px;
 }
 
@@ -99,13 +125,69 @@ button:active {
   transform: scale(0.97);
 }
 
-/* 武將列表 */
+/* ================================
+   🧍 武將列表
+================================ */
 #generalsList {
   margin-top: 15px;
   width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* ⭐ 水平置中 */
+}
+.general-card {
+  background: #2f2f4a;
+  border-radius: 10px;
+  padding: 12px;
+  margin: 8px 0;
+  width: 260px;   /* ⭐ 固定寬度才會置中漂亮 */
+
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
+/* ================================
+   🪟 彈窗（勝敗提示）
+================================ */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0,0,0,0.5);
+
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
 }
 
-#generalsList div {
-  padding: 5px;
-  border-bottom: 1px solid #444;
+.modal-box {
+  background: #0e0e0e;
+  padding: 20px;
+  border-radius: 10px;
+
+  text-align: center;
+  max-width: 300px;
+  width: 90%;
 }
+
+/* ================================
+   🎯 道具模式 UI（安全版）
+   👉 只做視覺變淡，不鎖操作
+================================ */
+
+body.action-mode-active .page:not(#generalsPage) {
+  opacity: 0.35;
+  filter: grayscale(0.6);
+}
+
+/* navbar / stats / topItems 只變淡 */
+body.action-mode-active #navbar,
+body.action-mode-active #stats,
+body.action-mode-active #topItems {
+  opacity: 0.4;
+  filter: grayscale(0.4);
+}
+
+/* ❌ 重點：禁止使用 pointer-events:none
+   否則會直接導致 UI 無法點擊 */
