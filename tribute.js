@@ -26,8 +26,8 @@ export function handleTribute() {
 
   else if (t === 20) {
     msg = "🏰 威名漸起，諸侯敬畏！ 🎁獲得300金，200糧食!";
-    state.gold += 400;
-    state.food += 500;
+    state.gold += 300;
+    state.food += 200;
   }
 
   else if (t === 30) {
@@ -37,8 +37,8 @@ export function handleTribute() {
 
   else if (t === 40) {
     msg = "🏰 霸業已成，逐鹿中原！🎁獲得400金，300石頭，1 高級武將卷!!!";
-    state.gold += 600;
-    state.stone += 400;
+    state.gold += 400;
+    state.stone += 300;
     state.eliteScrolls += 1;
   }
 

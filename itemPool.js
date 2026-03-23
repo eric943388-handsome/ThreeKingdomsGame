@@ -22,7 +22,7 @@ export const itemPool = [
   // =========================
   {
     name: "補包",
-    weight: 3,
+    weight: 5,
 
     apply: (generalIndex = null, count = 1) => {
 
@@ -106,8 +106,8 @@ export const itemPool = [
 
 apply: (generalIndex = null, count = 1) => {
   if (generalIndex === null) {
-    state.expPacks++;
-    return "經驗禮包 +1";
+    state.expPacks+=2;
+    return "經驗禮包 +2";
   }
 
   const g = state.generals[generalIndex];

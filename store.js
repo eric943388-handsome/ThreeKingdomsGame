@@ -20,4 +20,4 @@ export const buyFood = () => buyItem("糧食", 30);
 export const buyStone = () => buyItem("石頭", 50);
 export const buyHpPack = () => buyItem("補包", 100);
 export const buyLoyaltyPack = () => buyItem("封侯令", 80);
-export const buyExpPack = () => buyItem("經驗禮包", 100);
+export const buyExpPack = () => buyItem("經驗禮包", 150);
