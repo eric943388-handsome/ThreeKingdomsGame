@@ -2,8 +2,8 @@
 // itemPool.js（道具系統核心）
 // ===============================
 
-import { state } from "./state.js";
-import { weightedRandom } from "./utils.js";
+import { state } from "../core/state.js";
+import { weightedRandom } from "../utils/utils.js";
 
 /**
  * 🎯 道具設計原則：

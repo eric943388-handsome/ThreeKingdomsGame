@@ -1,7 +1,7 @@
 //廢了
 
-import { state } from "./state.js";
-import { updateUI } from "./ui.js";
+import { state } from "../core/state.js";
+import { updateUI } from "../ui/ui.js";
 
 export function train(index){
   if(state.generals.length===0){ updateUI("沒有武將可以鍛鍊！"); return; }

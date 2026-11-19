@@ -1,9 +1,9 @@
-import { warriorPool } from "./warriorPool.js";
-import { eliteWarriorPool } from "./eliteWarriorPool.js";
+import { warriorPool } from "../data/warriorPool.js";
+import { eliteWarriorPool } from "../data/eliteWarriorPool.js";
 
 // ⭐ 新增：原始資料表（很關鍵）
-import { originalWarriorPool } from "./originalWarriorPool.js";
-import { originalElitePool } from "./originalElitePool.js";
+import { originalWarriorPool } from "../data/originalWarriorPool.js";
+import { originalElitePool } from "../data/originalElitePool.js";
 
 function findOriginal(name, pool) {
   return pool.find(g => g.name === name);
