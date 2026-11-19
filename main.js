@@ -1,22 +1,22 @@
 // ===============================
 // 📦 模組載入
 // ===============================
-import { recruit } from "./recruit.js";
-import { findEnemy, attackEnemy } from "./war.js";
-import { updateUI, showIntro, showGeneralModal } from "./ui.js";
-import { state } from "./state.js";
-import { itemPool } from "./itemPool.js";
-import { sellGeneral, setActiveGeneral } from "./general.js";
+import { recruit } from "./src/features/recruit.js";
+import { findEnemy, attackEnemy } from "./src/features/war.js";
+import { updateUI, showIntro, showGeneralModal } from "./src/ui/ui.js";
+import { state } from "./src/core/state.js";
+import { itemPool } from "./src/data/itemPool.js";
+import { sellGeneral, setActiveGeneral } from "./src/features/general.js";
 import {
   buyFood,
   buyStone,
   buyHpPack,
   buyLoyaltyPack,
   buyExpPack
-} from "./store.js";
-import { developAtk, developDef } from "./develop.js";
-import { useEliteScroll } from "./eliteRecruit.js";
-import { sellItem } from "./itemActions.js";
+} from "./src/features/store.js";
+import { developAtk, developDef } from "./src/features/develop.js";
+import { useEliteScroll } from "./src/features/eliteRecruit.js";
+import { sellItem } from "./src/features/itemActions.js";
 
 // ===============================
 // 🚀 初始化入口

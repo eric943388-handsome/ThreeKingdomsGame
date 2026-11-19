@@ -1,8 +1,8 @@
-import { weightedRandom } from "./utils.js";
-import { warriorPool } from "./warriorPool.js";
-import { eliteWarriorPool } from "./eliteWarriorPool.js";
-import { state } from "./state.js";
-import { getRandomItem } from "./itemPool.js";
+import { weightedRandom } from "../utils/utils.js";
+import { warriorPool } from "../data/warriorPool.js";
+import { eliteWarriorPool } from "../data/eliteWarriorPool.js";
+import { state } from "../core/state.js";
+import { getRandomItem } from "../data/itemPool.js";
 
 export function eliteRecruit() {
   let msg = "";

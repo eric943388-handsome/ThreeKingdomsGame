@@ -1,5 +1,5 @@
-import { state, resetGame } from "./state.js";
-import { itemPool } from "./itemPool.js";
+import { state, resetGame } from "../core/state.js";
+import { itemPool } from "../data/itemPool.js";
 
 // ===============================
 // UI 更新入口（唯一入口）

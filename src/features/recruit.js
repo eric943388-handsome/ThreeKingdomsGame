@@ -1,7 +1,7 @@
-import { state } from "./state.js";
-import { warriorPool } from "./warriorPool.js";
-import { weightedRandom } from "./utils.js";
-import { getRandomItem } from "./itemPool.js";
+import { state } from "../core/state.js";
+import { warriorPool } from "../data/warriorPool.js";
+import { weightedRandom } from "../utils/utils.js";
+import { getRandomItem } from "../data/itemPool.js";
 
 /**
  * 招募（抽卡）

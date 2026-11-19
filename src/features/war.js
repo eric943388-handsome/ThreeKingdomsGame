@@ -1,10 +1,9 @@
-import { state, resetGame } from "./state.js";
-import { weightedRandom, randInt } from "./utils.js";
-import { updateUI } from "./ui.js";
-import { getRandomItem } from "./itemPool.js";
+import { state, resetGame } from "../core/state.js";
+import { weightedRandom, randInt } from "../utils/utils.js";
+import { updateUI, showGameOverModal } from "../ui/ui.js";
+import { getRandomItem } from "../data/itemPool.js";
 import { returnGeneralToPool } from "./generalPoolManager.js";
 import { handleTribute } from "./tribute.js";
-import { showGameOverModal } from "./ui.js";
 
 // ===== 掉落設定 =====
 const dropRates = {

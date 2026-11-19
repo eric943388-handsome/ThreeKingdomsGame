@@ -1,6 +1,6 @@
 // develop.js
-import { state } from "./state.js";
-import { updateUI } from "./ui.js";
+import { state } from "../core/state.js";
+import { updateUI } from "../ui/ui.js";
 
 export function developAtk() {
   // ===== 根據當前兵力計算消耗 =====

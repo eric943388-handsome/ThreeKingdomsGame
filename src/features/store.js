@@ -1,6 +1,6 @@
 // store.js
-import { state } from "./state.js";
-import { itemPool, getRandomItem } from "./itemPool.js";
+import { state } from "../core/state.js";
+import { itemPool, getRandomItem } from "../data/itemPool.js";
 
 /**
  * 購買道具統一函式
